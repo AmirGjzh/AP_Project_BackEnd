@@ -1,6 +1,7 @@
 import java.io.FileWriter;
 import java.util.Formatter;
 import java.util.Scanner;
+import java.util.function.Predicate;
 import java.util.regex.Pattern;
 
 public class Main {
@@ -9,6 +10,7 @@ public class Main {
     static String RED = "\u001B[31m";
     static String GREEN = "\u001B[32m";
     static String BLUE = "\u001B[34m";
+    static String YELLOW = "\u001B[33m";
 
     public static void main(String[] args) {
         System.out.print("\033[H\033[2J");
@@ -105,7 +107,7 @@ public class Main {
                                 addTeacher(username, pass1, name, lastname);
                                 System.out.print("\033[H\033[2J");
                                 System.out.flush();
-                                System.out.println(GREEN + "|--------------- Teacher successfully added ---------------|\n" + RESET);
+                                System.out.println(YELLOW + "|--------------- Teacher successfully added ---------------|\n" + RESET);
                                 break;
                             }
                             case 2: {
@@ -127,13 +129,60 @@ public class Main {
 
                                 System.out.print("\033[H\033[2J");
                                 System.out.flush();
-                                System.out.println(GREEN + "|-------------- Teacher successfully removed --------------|\n" + RESET);
+                                System.out.println(YELLOW + "|-------------- Teacher successfully removed --------------|\n" + RESET);
                                 break;
                             }
                             case 3: {
+                                System.out.print("\033[H\033[2J");
+                                System.out.flush();
+                                System.out.println(GREEN + "|------------------ Task -> Adding course -----------------|" + RESET);
+
+
+
+                                System.out.println(BLUE + "|-------------------- Enter course name -------------------|" + RESET);
+                                String name = input.next();
+                                while (!courseNameValidation(name)) {
+                                    System.out.print("\033[H\033[2J");
+                                    System.out.flush();
+                                    System.out.println(RED + "|------- This name has already been used! Try again -------|" + RESET);
+                                    name = input.next();
+                                }
+
+                                System.out.print("\033[H\033[2J");
+                                System.out.flush();
+                                System.out.println(BLUE + "|------------------- Enter course units -------------------|" + RESET);
+                                int units = input.nextInt();
+
+                                System.out.print("\033[H\033[2J");
+                                System.out.flush();
+                                System.out.println(BLUE + "|--------------------- Enter exam date --------------------|" + RESET);
+                                String examDate = input.next();
+
+                                addCourse(name, units, examDate);
+                                System.out.print("\033[H\033[2J");
+                                System.out.flush();
+                                System.out.println(YELLOW + "|---------------- Course successfully added ---------------|" + RESET);
                                 break;
                             }
                             case 4: {
+                                System.out.print("\033[H\033[2J");
+                                System.out.flush();
+                                System.out.println(GREEN + "|---------------- Task -> Removing a course ---------------|" + RESET);
+
+
+                                System.out.println(BLUE + "|-------------------- Enter course name -------------------|" + RESET);
+                                String name = input.next();
+                                while (!findCourseName(name)) {
+                                    System.out.print("\033[H\033[2J");
+                                    System.out.flush();
+                                    System.out.println(RED + "|------------ Course name not found! Try again ------------|" + RESET);
+                                    name = input.next();
+                                }
+
+                                removeCourse(name);
+                                System.out.print("\033[H\033[2J");
+                                System.out.flush();
+                                System.out.println(YELLOW + "|--------------- Course successfully removed --------------|" + RESET);
                                 break;
                             }
                             case 5: {
@@ -167,6 +216,20 @@ public class Main {
                 }
             }
         }
+    }
+
+    private static void removeCourse(String name) {
+    }
+
+    private static boolean findCourseName(String name) {
+        return true;
+    }
+
+    private static void addCourse(String name, int units, String examDate) {
+    }
+
+    private static boolean courseNameValidation(String name) {
+        return true;
     }
 
     private static void removeTeacher(String username) {
