@@ -8,14 +8,17 @@ public class Student {
 
     private final String id;
 
+    private String password;
+
     private int units;
 
     private final ArrayList<Course> courses;
 //----------------------------------------------------------------------------------------------------------------------
-    public Student(String name, String lastname, String id) {
+    public Student(String name, String lastname, String id, String password) {
         this.name = name;
         this.lastname = lastname;
         this.id = id;
+        this.password = password;
         units = 0;
         courses = new ArrayList<>();
     }
@@ -30,6 +33,14 @@ public class Student {
 
     public String getId() {
         return id;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     public int getUnits() {
