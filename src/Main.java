@@ -1,6 +1,5 @@
-import java.io.FileWriter;
-import java.util.Formatter;
-import java.util.Scanner;
+import java.io.*;
+import java.util.*;
 import java.util.function.Predicate;
 import java.util.regex.Pattern;
 
@@ -13,6 +12,7 @@ public class Main {
     static String YELLOW = "\u001B[33m";
 
     public static void main(String[] args) {
+
         System.out.print("\033[H\033[2J");
         System.out.flush();
 
@@ -344,7 +344,7 @@ public class Main {
                         }
                     }
 
-                    break out;
+                //    break out;
                 }
                 default: {
                     System.out.print("\033[H\033[2J");
@@ -360,42 +360,116 @@ public class Main {
     }
 
     private static boolean findStudentId(String id) {
-        return true;
+        File dir = new File("C:\\Users\\Sumsung\\OneDrive\\Documents\\Java" +
+                "\\AP_Project_BackEnd\\Data Base Files\\Students");
+        File[] files = dir.listFiles();
+
+        if (files == null) {
+            return false;
+        }
+
+        for (File file : files) {
+            if (file.getName().equals(id + ".txt")) {
+                return true;
+            }
+        }
+        return false;
     }
 
     private static void removeStudent(String id) {
+        File file = new File("C:\\Users\\Sumsung\\OneDrive\\Documents\\Java\\" +
+                "AP_Project_BackEnd\\Data Base Files\\Students\\" + id + ".txt");
+        file.delete();
     }
 
-    private static void addStudent(String username, String pass1, String name, String lastname) {
+    private static void addStudent(String id, String pass, String name, String lastname) {
+        try {
+            FileOutputStream fos = new FileOutputStream("C:\\Users\\Sumsung\\OneDrive\\Documents\\Java" +
+                    "\\AP_Project_BackEnd\\Data Base Files\\Students\\" + id + ".txt");
+            ObjectOutputStream oos = new ObjectOutputStream(fos);
+
+            oos.writeObject(new Teacher(name, lastname, id, pass));
+
+            fos.close();
+            oos.close();
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
-    private static boolean studentIdValidation(String username) {
-        return true;
+    private static boolean studentIdValidation(String id) {
+        return !findStudentId(id);
     }
 
     private static void removeCourse(String name) {
+        File file = new File("C:\\Users\\Sumsung\\OneDrive\\Documents\\Java\\" +
+                "AP_Project_BackEnd\\Data Base Files\\Courses\\" + name + ".txt");
+        file.delete();
     }
 
     private static boolean findCourseName(String name) {
-        return true;
+        File dir = new File("C:\\Users\\Sumsung\\OneDrive\\Documents\\Java" +
+                "\\AP_Project_BackEnd\\Data Base Files\\Courses");
+        File[] files = dir.listFiles();
+
+        if (files == null) {
+            return false;
+        }
+
+        for (File file : files) {
+            if (file.getName().equals(name + ".txt")) {
+                return true;
+            }
+        }
+        return false;
     }
 
     private static void addCourse(String name, int units, String examDate) {
+        try {
+            FileOutputStream fos = new FileOutputStream("C:\\Users\\Sumsung\\OneDrive\\Documents\\Java" +
+                    "\\AP_Project_BackEnd\\Data Base Files\\Courses\\" + name + ".txt");
+            ObjectOutputStream oos = new ObjectOutputStream(fos);
+
+            oos.writeObject(new Course(name, units, examDate));
+
+            fos.close();
+            oos.close();
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     private static boolean courseNameValidation(String name) {
-        return true;
+        return !findCourseName(name);
     }
 
     private static void removeTeacher(String username) {
+        File file = new File("C:\\Users\\Sumsung\\OneDrive\\Documents\\Java\\" +
+                "AP_Project_BackEnd\\Data Base Files\\Teachers\\" + username + ".txt");
+        file.delete();
     }
 
     private static boolean findTeacherUsername(String username) {
-        return true;
+        File dir = new File("C:\\Users\\Sumsung\\OneDrive\\Documents\\Java" +
+                "\\AP_Project_BackEnd\\Data Base Files\\Teachers");
+        File[] files = dir.listFiles();
+
+        if (files == null) {
+            return false;
+        }
+
+        for (File file : files) {
+            if (file.getName().equals(username + ".txt")) {
+                return true;
+            }
+        }
+        return false;
     }
 
     private static boolean teacherUserValidation(String username) {
-        return true;
+        return !findTeacherUsername(username);
     }
 
     private static boolean passValidation(String pass, String username) {
@@ -407,6 +481,18 @@ public class Main {
     }
 
     private static void addTeacher(String username, String pass, String name, String lastname) {
+        try {
+            FileOutputStream fos = new FileOutputStream("C:\\Users\\Sumsung\\OneDrive\\Documents\\Java" +
+                    "\\AP_Project_BackEnd\\Data Base Files\\Teachers\\" + username + ".txt");
+            ObjectOutputStream oos = new ObjectOutputStream(fos);
 
+            oos.writeObject(new Teacher(name, lastname, username, pass));
+
+            fos.close();
+            oos.close();
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }
