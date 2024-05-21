@@ -6,15 +6,18 @@ public class Teacher {
 
     private final String lastname;
 
-    private final String id;
+    private final String username;
+
+    private String password;
 
     private ArrayList<Course> courses;
 //----------------------------------------------------------------------------------------------------------------------
-    public Teacher(String name, String lastname, String id) {
+    public Teacher(String name, String lastname, String username, String password) {
         this.name = name;
         this.lastname = lastname;
         courses = new ArrayList<>();
-        this.id = id;
+        this.username = username;
+        this.password = password;
     }
 
     public String getName() {
@@ -29,8 +32,16 @@ public class Teacher {
         return courses;
     }
 
-    public String getId() {
-        return id;
+    public String getUsername() {
+        return username;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public String getPassword() {
+        return password;
     }
 
     public void setCourses(ArrayList<Course> courses) {

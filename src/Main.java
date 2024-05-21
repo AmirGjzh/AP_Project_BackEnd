@@ -1,6 +1,4 @@
-import java.io.File;
 import java.io.FileWriter;
-import java.lang.reflect.Executable;
 import java.util.Formatter;
 import java.util.Scanner;
 import java.util.regex.Pattern;
@@ -24,7 +22,7 @@ public class Main {
         while (true) {
             System.out.print(GREEN + """
                     |----------------- What is you're access? -----------------|
-                    |---------- (admin = 1, teacher = 2, student = 3) ---------|
+                    |---------------- (admin = 1, teacher = 2) ----------------|
                     """ + RESET);
             int access = input.nextInt();
 
@@ -52,16 +50,16 @@ public class Main {
                             case 1: {
                                 System.out.print("\033[H\033[2J");
                                 System.out.flush();
-                                System.out.println(GREEN + "|-------------------- Teacher sign up ---------------------|" + RESET);
+                                System.out.println(GREEN + "|----------------- Task -> Adding teacher -----------------|" + RESET);
 
 
 
-                                System.out.println(BLUE + "|----------------- Enter you're username: -----------------|" + RESET);
+                                System.out.println(BLUE + "|----------------- Enter you're username ------------------|" + RESET);
                                 String username = input.next();
-                                while (!userValidation(username)) {
+                                while (!teacherUserValidation(username)) {
                                     System.out.print("\033[H\033[2J");
                                     System.out.flush();
-                                    System.out.println(RED + "|---- This username has already been used! Try again: -----|" + RESET);
+                                    System.out.println(RED + "|---- This username has already been used! Try again ------|" + RESET);
                                     username = input.next();
                                 }
                                 System.out.print("\033[H\033[2J");
@@ -69,22 +67,22 @@ public class Main {
 
 
 
-                                System.out.println(BLUE + "|----------------- Enter you're password: -----------------|" + RESET);
+                                System.out.println(BLUE + "|----------------- Enter you're password ------------------|" + RESET);
                                 String pass1 = input.next();
-                                while (!passValidation(pass1, username)) {
+                                while (!teacherPassValidation(pass1, username)) {
                                     System.out.print("\033[H\033[2J");
                                     System.out.flush();
-                                    System.out.println(RED + "|--------------- Wrong password! Try again: ---------------|" + RESET);
+                                    System.out.println(RED + "|--------------- Wrong password! Try again ----------------|" + RESET);
                                     pass1 = input.next();
                                 }
                                 System.out.print("\033[H\033[2J");
                                 System.out.flush();
-                                System.out.println(BLUE + "|----------------- Verify you're password: ----------------|" + RESET);
+                                System.out.println(BLUE + "|----------------- Verify you're password -----------------|" + RESET);
                                 String pass2 = input.next();
                                 while (!pass1.equals(pass2)) {
                                     System.out.print("\033[H\033[2J");
                                     System.out.flush();
-                                    System.out.println(RED + "|---------------- Doesn't match! Try again: ---------------|" + RESET);
+                                    System.out.println(RED + "|---------------- Doesn't match! Try again ----------------|" + RESET);
                                     pass2 = input.next();
                                 }
                                 System.out.print("\033[H\033[2J");
@@ -92,12 +90,12 @@ public class Main {
 
 
 
-                                System.out.println(BLUE + "|------------------- Enter you're name: -------------------|" + RESET);
+                                System.out.println(BLUE + "|------------------- Enter you're name --------------------|" + RESET);
                                 input.next();
                                 String name = input.nextLine();
                                 System.out.print("\033[H\033[2J");
                                 System.out.flush();
-                                System.out.println(BLUE + "|----------------- Enter you're lastname: -----------------|" + RESET);
+                                System.out.println(BLUE + "|----------------- Enter you're lastname ------------------|\n" + RESET);
                                 String lastname = input.nextLine();
                                 System.out.print("\033[H\033[2J");
                                 System.out.flush();
@@ -107,10 +105,29 @@ public class Main {
                                 addTeacher(username, pass1, name, lastname);
                                 System.out.print("\033[H\033[2J");
                                 System.out.flush();
-                                System.out.println(GREEN + "|---------------- Successfully signed up :) ---------------|\n" + RESET);
+                                System.out.println(GREEN + "|--------------- Teacher successfully added ---------------|\n" + RESET);
                                 break;
                             }
                             case 2: {
+                                System.out.print("\033[H\033[2J");
+                                System.out.flush();
+                                System.out.println(GREEN + "|---------------- Task -> Removing teacher ----------------|" + RESET);
+
+
+                                System.out.println(BLUE + "|------------ Enter teacher username to remove ------------|" + RESET);
+                                String username = input.next();
+                                while (!findTeacherUsername(username)) {
+                                    System.out.print("\033[H\033[2J");
+                                    System.out.flush();
+                                    System.out.println(RED + "|-------------- Username not found! Try again -------------|" + RESET);
+                                    username = input.next();
+                                }
+
+                                removeTeacher(username);
+
+                                System.out.print("\033[H\033[2J");
+                                System.out.flush();
+                                System.out.println(GREEN + "|-------------- Teacher successfully removed --------------|\n" + RESET);
                                 break;
                             }
                             case 3: {
@@ -143,9 +160,6 @@ public class Main {
                 case 2: {
                     break out;
                 }
-                case 3: {
-                    break out;
-                }
                 default: {
                     System.out.print("\033[H\033[2J");
                     System.out.flush();
@@ -155,27 +169,18 @@ public class Main {
         }
     }
 
-
-
-    private static boolean userValidation(String username) {
-        try {
-            Scanner scanner = new Scanner(new File("C:\\Users\\Sumsung\\OneDrive\\Documents\\" +
-                    "Java\\AP_Project_BackEnd\\Teacher_List.txt"));
-            while (scanner.hasNext()) {
-                if (scanner.nextLine().split(" {2}", 2)[0].equals(username)) {
-                    return false;
-                }
-            }
-            System.out.println("jj");
-            return true;
-        }
-        catch (Exception e) {
-            e.printStackTrace();
-        }
-        return false;
+    private static void removeTeacher(String username) {
     }
 
-    private static boolean passValidation(String pass, String username) {
+    private static boolean findTeacherUsername(String username) {
+        return true;
+    }
+
+    private static boolean teacherUserValidation(String username) {
+        return true;
+    }
+
+    private static boolean teacherPassValidation(String pass, String username) {
         Pattern pattern1 = Pattern.compile(".*[A-Z].*");
         Pattern pattern2 = Pattern.compile(".*[a-z].*");
         Pattern pattern3 = Pattern.compile(".*\\d.*");
@@ -184,14 +189,6 @@ public class Main {
     }
 
     private static void addTeacher(String username, String pass, String name, String lastname) {
-        try {
-            Formatter formatter = new Formatter(new FileWriter("C:\\Users\\Sumsung\\OneDrive\\Documents\\" +
-                    "Java\\AP_Project_BackEnd\\Teacher_List.txt", true));
-            formatter.format(username + "  " + pass + "\n");
-            formatter.close();
-        }
-        catch (Exception e) {
-            e.printStackTrace();
-        }
+
     }
 }
