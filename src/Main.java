@@ -365,7 +365,6 @@ public class Main {
                                         System.out.println(GREEN + "Successfully added" + RESET);
                                         break;
                                 }
-
                                 break;
                             }
                             case 10: {
@@ -457,8 +456,8 @@ public class Main {
                     while (true) {
                         System.out.print(BLUE + """
                                 Choose your order:
-                                1- Adding new teacher
-                                2- Removing a teacher
+                                1- Adding new student to course
+                                2- Removing a student from course
                                 3- Adding new course
                                 4- Removing a course
                                 5- Adding new student
@@ -468,7 +467,74 @@ public class Main {
                         int order = input.nextInt();
 
                         switch (order) {
+                            case 1: {
+                                System.out.println(BLUE + "Enter student id" + RESET);
+                                String id = input.next();
+                                while (!findStudentId(id)) {
+                                    System.out.println(RED + "Id not found! Try again" + RESET);
+                                    id = input.next();
+                                }
 
+                                System.out.println(BLUE + "Enter course name" + RESET);
+                                String name = input.next();
+                                while (!findCourseName(name)) {
+                                    System.out.println(RED + "Course not found! Try again" + RESET);
+                                    name = input.next();
+                                }
+
+                                Student student = getStudentFromDataBase(id);
+                                Course course = getCourseFromDataBase(name);
+                                Teacher teacher = getTeacherFromDataBase(username);
+
+                                switch (teacher.addStudentToCourse(student, course)) {
+                                    case 1:
+                                        System.out.println(RED + "This student is already in this course" + RESET);
+                                        break;
+                                    case 2:
+                                        updateCourse(course);
+                                        updateStudent(student);
+                                        System.out.println(GREEN + "Successfully added" + RESET);
+                                        break;
+                                    case 3:
+                                        System.out.println(RED + "You don't have access to this course" + RESET);
+                                        break;
+                                }
+                                break;
+                            }
+                            case 2: {
+                                System.out.println(BLUE + "Enter student id" + RESET);
+                                String id = input.next();
+                                while (!findStudentId(id)) {
+                                    System.out.println(RED + "Id not found! Try again" + RESET);
+                                    id = input.next();
+                                }
+
+                                System.out.println(BLUE + "Enter course name" + RESET);
+                                String name = input.next();
+                                while (!findCourseName(name)) {
+                                    System.out.println(RED + "Course not found! Try again" + RESET);
+                                    name = input.next();
+                                }
+
+                                Student student = getStudentFromDataBase(id);
+                                Course course = getCourseFromDataBase(name);
+                                Teacher teacher = getTeacherFromDataBase(username);
+
+                                switch (teacher.removeStudentFromCourse(student, course)) {
+                                    case 1:
+                                        updateCourse(course);
+                                        updateStudent(student);
+                                        System.out.println(GREEN + "Successfully removed" + RESET);
+                                        break;
+                                    case 2:
+                                        System.out.println(RED + "This student isn't in this course" + RESET);
+                                        break;
+                                    case 3:
+                                        System.out.println(RED + "You don't have access to this course" + RESET);
+                                        break;
+                                }
+                                break;
+                            }
                         }
                     }
 

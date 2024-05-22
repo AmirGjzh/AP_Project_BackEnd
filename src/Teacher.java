@@ -65,7 +65,7 @@ public class Teacher implements Serializable {
         else {
             return 2;
         }
-    }
+    } //
 
     public int removeCourse(Course course) {
         for (Course c : courses) {
@@ -81,25 +81,27 @@ public class Teacher implements Serializable {
             }
         }
         return 1;
-    }
+    } //
 
-    public void addStudentToCourse(Student student, Course course) {
-        if (courses.contains(course)) {
-            course.addStudent(student);
+    public int addStudentToCourse(Student student, Course course) {
+        for (Course c : courses) {
+            if (c.getName().equals(course.getName())) {
+                return course.addStudent(student);
+            }
         }
-        else {
-            System.out.println("You don't have access to this course!");
-        }
-    }
+        return 3;
+            //System.out.println("You don't have access to this course!");
+    } //
 
-    public void removeStudentFromCourse(Student student, Course course) {
-        if (courses.contains(course)) {
-            course.removeStudent(student);
+    public int removeStudentFromCourse(Student student, Course course) {
+        for (Course c : courses) {
+            if (c.getName().equals(course.getName())) {
+                return course.removeStudent(student);
+            }
         }
-        else {
-            System.out.println("You don't have access to this course!");
-        }
-    }
+        return 3;
+        //System.out.println("You don't have access to this course!");
+    } //
 
     public void addExerciseToCourse(Assignment exercise) {
         if (courses.contains(exercise.getCourse())) {

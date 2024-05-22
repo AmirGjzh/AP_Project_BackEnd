@@ -125,7 +125,7 @@ public class Course implements Serializable {
         students.put(student, 0.0);
         student.addCourse(this);
         return 2;
-    }
+    } //
 
     public int removeStudent(Student student) {
         for (Student s : students.keySet()) {
@@ -137,7 +137,7 @@ public class Course implements Serializable {
         }
         //System.out.println("This student isn't in this course!");
         return 2;
-    }
+    } //
 
     public void addExercise(Assignment exercise) {
         if (exercises.contains(exercise)) {

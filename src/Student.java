@@ -63,7 +63,7 @@ public class Student implements Serializable {
         units += course.getUnits();
         courses.add(course);
 //        System.out.println("The student added successfully.");
-    }
+    } //
 
     public void removeCourse(Course course) {
         units -= course.getUnits();
@@ -74,7 +74,7 @@ public class Student implements Serializable {
             }
         }
 //        System.out.println("The student removed successfully.");
-    }
+    } //
 
     public void printCourses() {
         if (courses.isEmpty()) {
