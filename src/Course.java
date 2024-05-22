@@ -1,3 +1,4 @@
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -5,6 +6,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class Course implements Serializable {
+    @Serial
+    private static final long serialVersionUID = 0;
 
     private final String name;
 
@@ -69,13 +72,16 @@ public class Course implements Serializable {
     }
 
     public boolean setTeacher(Teacher teacher) {
+        if (teacher == null) {
+            this.teacher = null;
+        }
         if (this.teacher == null) {
             this.teacher = teacher;
-            System.out.println("Teacher: " + teacher.getName() + " successfully set for course: " + name + ".");
+            //System.out.println("Teacher: " + teacher.getName() + " successfully set for course: " + name + ".");
             return true;
         }
         else {
-            System.out.println("This course already has a teacher!");
+            //System.out.println("This course already has a teacher!");
             return false;
         }
     }

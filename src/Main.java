@@ -1,6 +1,5 @@
 import java.io.*;
 import java.util.*;
-import java.util.function.Predicate;
 import java.util.regex.Pattern;
 
 public class Main {
@@ -44,6 +43,8 @@ public class Main {
                                 4- Removing a course
                                 5- Adding new student
                                 6- Removing a student
+                                7- Adding course for teacher
+                                9- Removing course from teacher
                                 10- Exit.
                                 """ + RESET);
                         int order = input.nextInt();
@@ -270,6 +271,70 @@ public class Main {
                                 System.out.println(YELLOW + "|-------------- Student successfully removed --------------|\n" + RESET);
                                 break;
                             }
+                            case 7: {
+                                System.out.println(BLUE + "Enter teacher username" + RESET);
+                                String username = input.next();
+                                while (!findTeacherUsername(username)) {
+                                    System.out.println(RED + "Username not found! Try again" + RESET);
+                                    username = input.next();
+                                }
+
+                                System.out.println(BLUE + "Enter course name" + RESET);
+                                String name = input.next();
+                                while (!findCourseName(name)) {
+                                    System.out.println(RED + "Course not found! Try again" + RESET);
+                                    name = input.next();
+                                }
+
+                                Teacher teacher = getTeacherFromDataBase(username);
+                                Course course = getCourseFromDataBase(name);
+
+                                switch (teacher.addCourse(course)) {
+                                    case 1:
+                                        System.out.println(RED + "This teacher already have this course" + RESET);
+                                        break;
+                                    case 2:
+                                        System.out.println(RED + "This course already has a teacher" + RESET);
+                                        break;
+                                    case 3:
+                                        updateTeacher(teacher);
+                                        updateCourse(course);
+                                        System.out.println(GREEN + "successfully added"  +RESET);
+                                        break;
+                                }
+
+                                break;
+                            }
+                            case 8: {
+                                System.out.println(BLUE + "Enter teacher username" + RESET);
+                                String username = input.next();
+                                while (!findTeacherUsername(username)) {
+                                    System.out.println(RED + "Username not found! Try again" + RESET);
+                                    username = input.next();
+                                }
+
+                                System.out.println(BLUE + "Enter course name" + RESET);
+                                String name = input.next();
+                                while (!findCourseName(name)) {
+                                    System.out.println(RED + "Course not found! Try again" + RESET);
+                                    name = input.next();
+                                }
+
+                                Teacher teacher = getTeacherFromDataBase(username);
+                                Course course = getCourseFromDataBase(name);
+
+                                switch (teacher.removeCourse(course)) {
+                                    case 1:
+                                        System.out.println(RED + "This teacher doesn't have this course" + RESET);
+                                        break;
+                                    case 2:
+                                        updateCourse(course);
+                                        updateTeacher(teacher);
+                                        System.out.println(GREEN + "Successfully removed" + RESET);
+                                        break;
+                                }
+                                break;
+                            }
                             case 10: {
                                 System.out.print("\033[H\033[2J");
                                 System.out.flush();
@@ -352,11 +417,107 @@ public class Main {
                     System.out.println(RED + "|---------------------- Wrong answer! ---------------------|" + RESET);
                 }
             }
+
         }
     }
 
+    private static void updateCourse(Course course) {
+        try {
+            ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream("C:\\Users\\Sumsung\\OneDrive\\" +
+                    "Documents\\Java\\AP_Project_BackEnd\\Data Base Files\\Courses\\" + course.getName() + ".txt"));
+            oos.writeObject(course);
+            oos.close();
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private static void updateTeacher(Teacher teacher) {
+        try {
+            ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream("C:\\Users\\Sumsung\\OneDrive\\" +
+                    "Documents\\Java\\AP_Project_BackEnd\\Data Base Files\\Teachers\\" + teacher.getUsername() + ".txt"));
+            oos.writeObject(teacher);
+            oos.close();
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private static Course getCourseFromDataBase(String name) {
+        File dir = new File("C:\\Users\\Sumsung\\OneDrive\\Documents\\Java" +
+                "\\AP_Project_BackEnd\\Data Base Files\\Courses");
+        File[] files = dir.listFiles();
+
+        for (File file : files) {
+            if (file.getName().equals(name + ".txt")) {
+                try {
+                    ObjectInputStream ois = new ObjectInputStream(new FileInputStream("C:\\Users\\Sumsung\\" +
+                            "OneDrive\\Documents\\Java\\AP_Project_BackEnd\\Data Base Files\\Courses\\" + name + ".txt"));
+                    Course course = (Course) ois.readObject();
+                    ois.close();
+                    return course;
+                }
+                catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        return null;
+    }
+
+    private static Teacher getTeacherFromDataBase(String username) {
+        File dir = new File("C:\\Users\\Sumsung\\OneDrive\\Documents\\Java" +
+                "\\AP_Project_BackEnd\\Data Base Files\\Teachers");
+        File[] files = dir.listFiles();
+
+        for (File file : files) {
+            if (file.getName().equals(username + ".txt")) {
+                try {
+                    ObjectInputStream ois = new ObjectInputStream(new FileInputStream("C:\\Users\\Sumsung\\" +
+                            "OneDrive\\Documents\\Java\\AP_Project_BackEnd\\Data Base Files\\Teachers\\" + username + ".txt"));
+                    Teacher teacher = (Teacher) ois.readObject();
+                    ois.close();
+                    return teacher;
+                }
+                catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        return null;
+    }
+
     private static int teacherLoginState(String username, String pass) {
-        return 0;
+        File dir = new File("C:\\Users\\Sumsung\\OneDrive\\Documents\\Java" +
+                "\\AP_Project_BackEnd\\Data Base Files\\Teachers");
+        File[] files = dir.listFiles();
+
+        if (files == null) {
+            return 1;
+        }
+
+        for (File file : files) {
+            if (file.getName().equals(username + ".txt")) {
+                try {
+                    ObjectInputStream ois = new ObjectInputStream(new FileInputStream("C:\\Users\\Sumsung\\" +
+                            "OneDrive\\Documents\\Java\\AP_Project_BackEnd\\Data Base Files\\Teachers\\" + username + ".txt"));
+                    Teacher teacher = (Teacher) ois.readObject();
+                    ois.close();
+                    if (teacher.getPassword().equals(pass)) {
+                        return 0;
+                    }
+                    else {
+                        return 2;
+                    }
+                }
+                catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        return 1;
     }
 
     private static boolean findStudentId(String id) {

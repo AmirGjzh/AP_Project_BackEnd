@@ -1,7 +1,10 @@
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.ArrayList;
 
 public class Teacher implements Serializable {
+    @Serial
+    private static final long serialVersionUID = 0;
 
     private final String name;
 
@@ -49,15 +52,35 @@ public class Teacher implements Serializable {
         this.courses = courses;
     }
 //----------------------------------------------------------------------------------------------------------------------
-    public void addCourse(Course course) {
-        if (courses.contains(course)) {
-            System.out.println("You already have this course!");
-        }
-        else {
-            if (course.setTeacher(this)) {
-                courses.add(course);
+    public int addCourse(Course course) {
+        for (Course c : courses) {
+            if (c.getName().equals(course.getName())) {
+                return 1;
             }
         }
+        if (course.setTeacher(this)) {
+            courses.add(course);
+            return 3;
+        }
+        else {
+            return 2;
+        }
+    }
+
+    public int removeCourse(Course course) {
+        for (Course c : courses) {
+            if (c.getName().equals(course.getName())) {
+                for (Course c1 : courses) {
+                    if (c1.getName().equals(course.getName())) {
+                        courses.remove(c1);
+                        break;
+                    }
+                }
+                course.setTeacher(null);
+                return 2;
+            }
+        }
+        return 1;
     }
 
     public void addStudentToCourse(Student student, Course course) {
