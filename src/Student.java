@@ -62,13 +62,18 @@ public class Student implements Serializable {
     public void addCourse(Course course) {
         units += course.getUnits();
         courses.add(course);
-        System.out.println("The student added successfully.");
+//        System.out.println("The student added successfully.");
     }
 
     public void removeCourse(Course course) {
         units -= course.getUnits();
-        courses.remove(course);
-        System.out.println("The student removed successfully.");
+        for (Course c : courses) {
+            if (c.getName().equals(course.getName())) {
+                courses.remove(c);
+                return;
+            }
+        }
+//        System.out.println("The student removed successfully.");
     }
 
     public void printCourses() {

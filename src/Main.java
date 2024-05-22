@@ -44,8 +44,10 @@ public class Main {
                                 5- Adding new student
                                 6- Removing a student
                                 7- Adding course for teacher
-                                9- Removing course from teacher
-                                10- Exit.
+                                8- Removing course from teacher
+                                9- Adding student to course
+                                10- Removing student from course
+                                16- Exit.
                                 """ + RESET);
                         int order = input.nextInt();
 
@@ -335,7 +337,68 @@ public class Main {
                                 }
                                 break;
                             }
+                            case 9: {
+                                System.out.println(BLUE + "Enter student id" + RESET);
+                                String id = input.next();
+                                while (!findStudentId(id)) {
+                                    System.out.println(RED + "Id not found! Try again" + RESET);
+                                    id = input.next();
+                                }
+
+                                System.out.println(BLUE + "Enter course name" + RESET);
+                                String name = input.next();
+                                while (!findCourseName(name)) {
+                                    System.out.println(RED + "Course not found! Try again" + RESET);
+                                    name = input.next();
+                                }
+
+                                Student student = getStudentFromDataBase(id);
+                                Course course = getCourseFromDataBase(name);
+
+                                switch (course.addStudent(student)) {
+                                    case 1:
+                                        System.out.println(RED + "This student is already in this course" + RESET);
+                                        break;
+                                    case 2:
+                                        updateCourse(course);
+                                        updateStudent(student);
+                                        System.out.println(GREEN + "Successfully added" + RESET);
+                                        break;
+                                }
+
+                                break;
+                            }
                             case 10: {
+                                System.out.println(BLUE + "Enter student id" + RESET);
+                                String id = input.next();
+                                while (!findStudentId(id)) {
+                                    System.out.println(RED + "Id not found! Try again" + RESET);
+                                    id = input.next();
+                                }
+
+                                System.out.println(BLUE + "Enter course name" + RESET);
+                                String name = input.next();
+                                while (!findCourseName(name)) {
+                                    System.out.println(RED + "Course not found! Try again" + RESET);
+                                    name = input.next();
+                                }
+
+                                Student student = getStudentFromDataBase(id);
+                                Course course = getCourseFromDataBase(name);
+
+                                switch (course.removeStudent(student)) {
+                                    case 1:
+                                        updateCourse(course);
+                                        updateStudent(student);
+                                        System.out.println(GREEN + "Successfully removed" + RESET);
+                                        break;
+                                    case 2:
+                                        System.out.println(RED + "This student isn't in this course" + RESET);
+                                        break;
+                                }
+                                break;
+                            }
+                            case 16: {
                                 System.out.print("\033[H\033[2J");
                                 System.out.flush();
                                 System.out.println(YELLOW + "|------------------------- Exited -------------------------|" + RESET);
@@ -419,6 +482,40 @@ public class Main {
             }
 
         }
+    }
+
+    private static void updateStudent(Student student) {
+        try {
+            ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream("C:\\Users\\Sumsung\\OneDrive\\" +
+                    "Documents\\Java\\AP_Project_BackEnd\\Data Base Files\\Students\\" + student.getId() + ".txt"));
+            oos.writeObject(student);
+            oos.close();
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private static Student getStudentFromDataBase(String id) {
+        File dir = new File("C:\\Users\\Sumsung\\OneDrive\\Documents\\Java" +
+                "\\AP_Project_BackEnd\\Data Base Files\\Students");
+        File[] files = dir.listFiles();
+
+        for (File file : files) {
+            if (file.getName().equals(id + ".txt")) {
+                try {
+                    ObjectInputStream ois = new ObjectInputStream(new FileInputStream("C:\\Users\\Sumsung\\" +
+                            "OneDrive\\Documents\\Java\\AP_Project_BackEnd\\Data Base Files\\Students\\" + id + ".txt"));
+                    Student student = (Student) ois.readObject();
+                    ois.close();
+                    return student;
+                }
+                catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        return null;
     }
 
     private static void updateCourse(Course course) {
@@ -549,7 +646,7 @@ public class Main {
                     "\\AP_Project_BackEnd\\Data Base Files\\Students\\" + id + ".txt");
             ObjectOutputStream oos = new ObjectOutputStream(fos);
 
-            oos.writeObject(new Teacher(name, lastname, id, pass));
+            oos.writeObject(new Student(name, lastname, id, pass));
 
             fos.close();
             oos.close();

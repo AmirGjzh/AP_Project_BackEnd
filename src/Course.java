@@ -116,24 +116,27 @@ public class Course implements Serializable {
         return null;
     }
 
-    public void addStudent(Student student) {
-        if (students.containsKey(student)) {
-            System.out.println("This student is already in the course!");
+    public int addStudent(Student student) {
+        for (Student s : students.keySet()) {
+            if (s.getId().equals(student.getId())) {
+                return 1;
+            }
         }
-        else {
-            students.put(student, 0.0);
-            student.addCourse(this);
-        }
+        students.put(student, 0.0);
+        student.addCourse(this);
+        return 2;
     }
 
-    public void removeStudent(Student student) {
-        if (students.containsKey(student)) {
-            students.remove(student);
-            student.removeCourse(this);
+    public int removeStudent(Student student) {
+        for (Student s : students.keySet()) {
+            if (s.getId().equals(student.getId())) {
+                students.remove(s);
+                student.removeCourse(this);
+                return 1;
+            }
         }
-        else {
-            System.out.println("This student isn't in this course!");
-        }
+        //System.out.println("This student isn't in this course!");
+        return 2;
     }
 
     public void addExercise(Assignment exercise) {
