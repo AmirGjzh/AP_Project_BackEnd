@@ -31,7 +31,7 @@ public class Main {
                 case 1: {
                     System.out.print("\033[H\033[2J");
                     System.out.flush();
-                    System.out.println(GREEN + "|---------------------- Welcome Admin ---------------------|" + RESET);
+                    System.out.println(GREEN + "Welcome Admin ---------------------|" + RESET);
 
                     out1:
                     while (true) {
@@ -420,12 +420,10 @@ public class Main {
 
                     System.out.println(BLUE + "|------------------ Enter Your username -----------------|" + RESET);
                     String username = input.next();
-                    System.out.print("\033[H\033[2J");
-                    System.out.flush();
+
                     System.out.println(BLUE + "|------------------ Enter Your password -----------------|" + RESET);
                     String pass = input.next();
-                    System.out.print("\033[H\033[2J");
-                    System.out.flush();
+
 
                     while (teacherLoginState(username, pass) != 0) {
                         switch (teacherLoginState(username, pass)) {
@@ -446,8 +444,7 @@ public class Main {
                         System.out.print("\033[H\033[2J");
                         System.out.flush();
                     }
-                    System.out.print("\033[H\033[2J");
-                    System.out.flush();
+
                     System.out.println(GREEN + "|--------------------- Welcome Teacher --------------------|" + RESET);
 
 
@@ -458,9 +455,9 @@ public class Main {
                                 Choose your order:
                                 1- Adding new student to course
                                 2- Removing a student from course
-                                3- Adding new course
-                                4- Removing a course
-                                5- Adding new student
+                                3- Adding new assignment to course
+                                4- Removing a assignment from course
+                                5- Setting project for course
                                 6- Removing a student
                                 10- Exit.
                                 """ + RESET);
@@ -535,10 +532,132 @@ public class Main {
                                 }
                                 break;
                             }
+                            case 3: {
+                                System.out.println(BLUE + "Enter course name" + RESET);
+                                String name = input.next();
+                                while (!findCourseName(name)) {
+                                    System.out.println(RED + "Course not found! Try again" + RESET);
+                                    name = input.next();
+                                }
+
+                                System.out.println("Enter assignment title");
+                                String title = input.next();
+                                System.out.println("Enter assignment deadline");
+                                int deadLine = input.nextInt();
+
+                                Course course = getCourseFromDataBase(name);
+                                Teacher teacher = getTeacherFromDataBase(username);
+                                if (addAssignment(title, course, deadLine)) {
+
+                                    Assignment assignment = getAssignmentFromDataBase(title, course.getName());
+                                    System.out.println(assignment.getCourse().getName());
+                                    System.out.println(teacher.getCourses().size());
+
+                                    switch (teacher.addExerciseToCourse(assignment, course)) {
+                                        case 1:
+                                            removeAssignment(assignment);
+                                            System.out.println("You don't have access to this course");
+                                            break;
+                                        case 3:
+                                            updateCourse(course);
+                                            updateTeacher(teacher);
+                                            System.out.println(course.getExercises().size());
+                                            System.out.println("Successfully added");
+                                            break;
+                                    }
+                                } else {
+                                    System.out.println("This exercise is already defined");
+                                }
+                                break;
+                            }
+                            case 4: {
+                                System.out.println(BLUE + "Enter course name" + RESET);
+                                String name = input.next();
+                                while (!findCourseName(name)) {
+                                    System.out.println(RED + "Course not found! Try again" + RESET);
+                                    name = input.next();
+                                }
+
+                                System.out.println("Enter assignment title");
+                                String title = input.next();
+                                while (!findAssignment(title, name)) {
+                                    System.out.println("There is no such assignment! TRy again");
+                                    title = input.next();
+                                }
+
+
+                                Course course = getCourseFromDataBase(name);
+                                Teacher teacher = getTeacherFromDataBase(username);
+                                Assignment assignment = getAssignmentFromDataBase(title, course.getName());
+
+                                switch (teacher.removeExerciseFromCourse(assignment, course)) {
+                                    case 1:
+                                        System.out.println("You don't have access to this course");
+                                        break;
+                                    case 2:
+                                        break;
+                                    case 3:
+                                        updateCourse(course);
+                                        removeAssignment(assignment);
+                                        System.out.println("successfully removed");
+                                        break;
+                                }
+
+
+                                break;
+                            }
+                            case 5: {
+                                System.out.println(BLUE + "Enter course name" + RESET);
+                                String name = input.next();
+                                while (!findCourseName(name)) {
+                                    System.out.println(RED + "Course not found! Try again" + RESET);
+                                    name = input.next();
+                                }
+
+                                System.out.println("Enter project title");
+                                String title = input.next();
+                                System.out.println("Enter assignment deadline");
+                                int deadLine = input.nextInt();
+
+                                Course course = getCourseFromDataBase(name);
+                                Teacher teacher = getTeacherFromDataBase(username);
+                                if (addAssignment(title, course, deadLine)) {
+
+                                    Assignment assignment = getAssignmentFromDataBase(title, course.getName());
+                                    System.out.println(assignment.getCourse().getName());
+                                    System.out.println(teacher.getCourses().size());
+
+                                    switch (teacher.addExerciseToCourse(assignment, course)) {
+                                        case 1:
+                                            removeAssignment(assignment);
+                                            System.out.println("You don't have access to this course");
+                                            break;
+                                        case 3:
+                                            updateCourse(course);
+                                            updateTeacher(teacher);
+                                            System.out.println(course.getExercises().size());
+                                            System.out.println("Successfully added");
+                                            break;
+                                    }
+                                } else {
+                                    System.out.println("This exercise is already defined");
+                                }
+                                break;
+                            }
+                            case 10: {
+                                System.out.print("\033[H\033[2J");
+                                System.out.flush();
+                                System.out.println(YELLOW + "|------------------------- Exited -------------------------|" + RESET);
+                                break out1;
+                            }
+                            default: {
+                                System.out.print("\033[H\033[2J");
+                                System.out.flush();
+                                System.out.println(RED + "|---------------------- Wrong answer! ---------------------|" + RESET);
+                            }
                         }
                     }
-
-                //    break out;
+                    break out;
                 }
                 default: {
                     System.out.print("\033[H\033[2J");
@@ -548,6 +667,71 @@ public class Main {
             }
 
         }
+    }
+
+    private static boolean findAssignment(String title, String name) {
+        File file = new File("C:\\Users\\Sumsung\\OneDrive\\Documents\\Java\\" +
+                "AP_Project_BackEnd\\Data Base Files\\Courses\\" + name + "\\" + title + ".txt");
+        return file.isFile();
+    }
+
+    private static void removeAssignment(Assignment assignment) {
+        File file = new File("C:\\Users\\Sumsung\\OneDrive\\Documents\\Java\\" +
+                "AP_Project_BackEnd\\Data Base Files\\Courses\\" + assignment.getCourse().getName() +
+                "\\" + assignment.getTitle() + ".txt");
+        file.delete();
+    }
+
+    private static Assignment getAssignmentFromDataBase(String title, String name) {
+        File dir = new File("C:\\Users\\Sumsung\\OneDrive\\Documents\\Java" +
+                "\\AP_Project_BackEnd\\Data Base Files\\Courses\\" + name);
+        File[] files = dir.listFiles();
+
+
+
+        for (File file : files) {
+            if (file.getName().equals(title + ".txt")) {
+                try {
+                    ObjectInputStream ois = new ObjectInputStream(new FileInputStream("C:\\Users\\Sumsung\\" +
+                            "OneDrive\\Documents\\Java\\AP_Project_BackEnd\\Data Base Files\\Courses\\" + name + "\\" + title + ".txt"));
+                    Assignment assignment = (Assignment) ois.readObject();
+                    ois.close();
+                    return assignment;
+                }
+                catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        return null;
+    }
+
+    private static boolean addAssignment(String title, Course course, int deadLine) {
+        try {
+            File dir = new File("C:\\Users\\Sumsung\\OneDrive\\Documents\\Java" +
+                    "\\AP_Project_BackEnd\\Data Base Files\\Courses\\" + course.getName());
+            File[] files = dir.listFiles();
+
+            for (File f : files) {
+                if (f.getName().equals(title + ".txt")) {
+                    return false;
+                }
+            }
+
+            FileOutputStream fos = new FileOutputStream("C:\\Users\\Sumsung\\OneDrive\\Documents\\Java" +
+                    "\\AP_Project_BackEnd\\Data Base Files\\Courses\\" + course.getName() + "\\" + title + ".txt");
+            ObjectOutputStream oos = new ObjectOutputStream(fos);
+
+            oos.writeObject(new Assignment(title, course, deadLine));
+
+            fos.close();
+            oos.close();
+            return true;
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
     }
 
     private static void updateStudent(Student student) {
@@ -751,6 +935,9 @@ public class Main {
 
     private static void addCourse(String name, int units, String examDate) {
         try {
+            File dir = new File("C:\\Users\\Sumsung\\OneDrive\\Documents\\Java" +
+                    "\\AP_Project_BackEnd\\Data Base Files\\Courses\\" + name);
+            dir.mkdirs();
             FileOutputStream fos = new FileOutputStream("C:\\Users\\Sumsung\\OneDrive\\Documents\\Java" +
                     "\\AP_Project_BackEnd\\Data Base Files\\Courses\\" + name + ".txt");
             ObjectOutputStream oos = new ObjectOutputStream(fos);

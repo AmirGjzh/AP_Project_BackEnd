@@ -139,25 +139,28 @@ public class Course implements Serializable {
         return 2;
     } //
 
-    public void addExercise(Assignment exercise) {
-        if (exercises.contains(exercise)) {
-            System.out.println("This exercise is already defined!");
+    public int addExercise(Assignment exercise) {
+        for (Assignment assignment : exercises) {
+            if (assignment.getTitle().equals(exercise.getTitle())) {
+                return 2;
+            }
         }
-        else {
-            exercises.add(exercise);
-            System.out.println("Exercise successfully added.");
-        }
-    }
+            //System.out.println("This exercise is already defined!");
+        System.out.println(exercises.size());
+        exercises.add(exercise);
+        return 3;
+        //System.out.println("Exercise successfully added.");
+    } //
 
-    public void removeExercise(Assignment exercise) {
-        if (exercises.contains(exercise)) {
-            exercises.remove(exercise);
-            System.out.println("Exercise successfully removed.");
+    public int removeExercise(Assignment exercise) {
+        for (Assignment assignment : exercises) {
+            if (assignment.getTitle().equals(exercise.getTitle())) {
+                exercises.remove(assignment);
+                return 3;
+            }
         }
-        else {
-            System.out.println("There is no such assignment!");
-        }
-    }
+        return 2;
+    } //
 
     public void printStudents() {
         if (students.isEmpty()) {

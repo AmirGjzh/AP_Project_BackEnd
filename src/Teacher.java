@@ -103,23 +103,27 @@ public class Teacher implements Serializable {
         //System.out.println("You don't have access to this course!");
     } //
 
-    public void addExerciseToCourse(Assignment exercise) {
-        if (courses.contains(exercise.getCourse())) {
-            exercise.getCourse().addExercise(exercise);
+    public int addExerciseToCourse(Assignment exercise, Course course) {
+        for (Course c : courses) {
+            if (c.getName().equals(exercise.getCourse().getName())) {
+                System.out.println(course.getExercises().size() + "...");
+                return course.addExercise(exercise);
+            }
         }
-        else {
-            System.out.println("You don't have access to this course!");
-        }
-    }
+        return 1;
+        //System.out.println("You don't have access to this course!");
+    } //
 
-    public void removeExerciseFromCourse(Assignment exercise) {
-        if (courses.contains(exercise.getCourse())) {
-            exercise.getCourse().removeExercise(exercise);
+    public int removeExerciseFromCourse(Assignment exercise, Course course) {
+        for (Course c : courses) {
+            if (c.getName().equals(course.getName())) {
+                return course.removeExercise(exercise);
+            }
         }
-        else {
-            System.out.println("You don't have access to this course!");
-        }
-    }
+
+        //System.out.println("You don't have access to this course!");
+        return 1;
+    } //
 
     public void addProjectToCourse(Assignment project, Course course) {
         if (courses.contains(course)) {
