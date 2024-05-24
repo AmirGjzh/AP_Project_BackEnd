@@ -86,24 +86,17 @@ public class Course implements Serializable {
         }
     }
 
-    public void setProject(Assignment project) {
+    public int setProject(Assignment project) {
         if (project != null) {
-            if (this.project != null) {
-                System.out.println("Project for this course is already defined!");
-            }
-            else {
+
+
                 this.project = project;
-                System.out.println("Project successfully set to course: " + name + ".");
-            }
+                return 3;
+
         }
         else {
-            if (this.project != null) {
-                this.project = null;
-                System.out.println("Project successfully removed from the course.");
-            }
-            else {
-                System.out.println("There is no project in this course");
-            }
+            this.project = null;
+            return 2;
         }
     }
 //----------------------------------------------------------------------------------------------------------------------

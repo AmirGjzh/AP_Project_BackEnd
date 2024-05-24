@@ -125,27 +125,24 @@ public class Teacher implements Serializable {
         return 1;
     } //
 
-    public void addProjectToCourse(Assignment project, Course course) {
-        if (courses.contains(course)) {
-            course.setProject(project);
-        }
-        else {
-            System.out.println("You don't have access to this course!");
-        }
-    }
+    public int addProjectToCourse(Assignment project, Course course) {
+        for (Course c : courses) {
+            if (c.getName().equals(course.getName())) {
 
-    public void removeProjectFromCourse(Assignment project, Course course) {
-        if (courses.contains(course)) {
-            if (course.getProject() == project) {
-                course.setProject(null);
-            }
-            else {
-                System.out.println("There is no such project in this course!");
+                return course.setProject(project);
             }
         }
-        else {
-            System.out.println("You don't have access to this course!");
+        return 1;
+    } //
+
+    public int removeProjectFromCourse(Assignment project, Course course) {
+        for (Course c : courses) {
+            if (c.getName().equals(course.getName())) {
+
+                return course.setProject(null);
+            }
         }
+        return 1;
     }
 
     public void changeDeadLine(Assignment assignment, int newDeadLine) {
