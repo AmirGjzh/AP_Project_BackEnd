@@ -36,9 +36,9 @@ public class Assignment implements Serializable {
         return isActive;
     }
 
-    public void setDeadLine(int deadLine) {
+    public int setDeadLine(int deadLine) {
         this.deadLine = deadLine;
-        System.out.println("Deadline successfully changed.");
+        return 2;
     }
 
     public void setActive(boolean active) {

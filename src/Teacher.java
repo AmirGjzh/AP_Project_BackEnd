@@ -15,6 +15,10 @@ public class Teacher implements Serializable {
     private String password;
 
     private ArrayList<Course> courses;
+
+    static String RESET = "\u001B[0m";
+    static String RED = "\u001B[31m";
+    static String GREEN = "\u001B[32m";
 //----------------------------------------------------------------------------------------------------------------------
     public Teacher(String name, String lastname, String username, String password) {
         this.name = name;
@@ -32,26 +36,38 @@ public class Teacher implements Serializable {
         return lastname;
     }
 
-    public ArrayList<Course> getCourses() {
-        return courses;
-    }
-
     public String getUsername() {
         return username;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
     }
 
     public String getPassword() {
         return password;
     }
 
-    public void setCourses(ArrayList<Course> courses) {
-        this.courses = courses;
+    public ArrayList<Course> getCourses() {
+        return courses;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 //----------------------------------------------------------------------------------------------------------------------
+    public void printCourses() {
+        if (courses.isEmpty()) {
+            System.out.print("\033[H\033[2J");
+            System.out.flush();
+            System.out.println(RED + "You don't have any courses" + RESET);
+        }
+        else {
+            System.out.print("\033[H\033[2J");
+            System.out.flush();
+            for (Course course : courses) {
+                System.out.println(GREEN + "Course: " + course.getName() + ", Units: " + course.getUnits() + RESET);
+            }
+            System.out.println();
+        }
+    } //--- Complete
+
     public int addCourse(Course course) {
         for (Course c : courses) {
             if (c.getName().equals(course.getName())) {
@@ -65,23 +81,18 @@ public class Teacher implements Serializable {
         else {
             return 2;
         }
-    } //
+    } //--- Complete
 
     public int removeCourse(Course course) {
         for (Course c : courses) {
             if (c.getName().equals(course.getName())) {
-                for (Course c1 : courses) {
-                    if (c1.getName().equals(course.getName())) {
-                        courses.remove(c1);
-                        break;
-                    }
-                }
+                courses.remove(c);
                 course.setTeacher(null);
                 return 2;
             }
         }
         return 1;
-    } //
+    } //--- Complete
 
     public int addStudentToCourse(Student student, Course course) {
         for (Course c : courses) {
@@ -90,8 +101,7 @@ public class Teacher implements Serializable {
             }
         }
         return 3;
-            //System.out.println("You don't have access to this course!");
-    } //
+    } //--- Complete
 
     public int removeStudentFromCourse(Student student, Course course) {
         for (Course c : courses) {
@@ -100,19 +110,16 @@ public class Teacher implements Serializable {
             }
         }
         return 3;
-        //System.out.println("You don't have access to this course!");
-    } //
+    } //--- Complete
 
     public int addExerciseToCourse(Assignment exercise, Course course) {
         for (Course c : courses) {
-            if (c.getName().equals(exercise.getCourse().getName())) {
-                System.out.println(course.getExercises().size() + "...");
+            if (c.getName().equals(course.getName())) {
                 return course.addExercise(exercise);
             }
         }
         return 1;
-        //System.out.println("You don't have access to this course!");
-    } //
+    } //--- Complete
 
     public int removeExerciseFromCourse(Assignment exercise, Course course) {
         for (Course c : courses) {
@@ -121,50 +128,47 @@ public class Teacher implements Serializable {
             }
         }
 
-        //System.out.println("You don't have access to this course!");
         return 1;
-    } //
+    } //--- Complete
 
     public int addProjectToCourse(Assignment project, Course course) {
         for (Course c : courses) {
             if (c.getName().equals(course.getName())) {
-
                 return course.setProject(project);
             }
         }
         return 1;
-    } //
+    } //--- Complete
 
     public int removeProjectFromCourse(Assignment project, Course course) {
         for (Course c : courses) {
             if (c.getName().equals(course.getName())) {
-
                 return course.setProject(null);
             }
         }
         return 1;
-    }
+    } //--- Complete
 
-    public void changeDeadLine(Assignment assignment, int newDeadLine) {
-        if (courses.contains(assignment.getCourse())) {
-            assignment.setDeadLine(newDeadLine);
-        }
-        else {
-            System.out.println("You don't have access to this course!");
-        }
-    }
-
-    public void addScoreToStudent(Student student, Course course, Double score) {
-        if (courses.contains(course)) {
-            if (course.getStudents().containsKey(student)) {
-                course.addScore(student, score);
-            }
-            else {
-                System.out.println("This student isn't in this course!");
+    public int changeDeadLine(Assignment assignment, int newDeadLine) {
+        for (Course course : courses) {
+            if (course.getName().equals(assignment.getCourse().getName())) {
+                return assignment.setDeadLine(newDeadLine);
             }
         }
-        else {
-            System.out.println("You don't have access to this course!");
+        return 1;
+    } //--- Complete
+
+    public int addScoreToStudent(Student student, Course course, Double score) {
+        for (Course c : courses) {
+            if (c.getName().equals(course.getName())) {
+                for (Student s : course.getStudents().keySet()) {
+                    if (s.getId().equals(student.getId())) {
+                        return course.addScore(student, score);
+                    }
+                }
+                return 2;
+            }
         }
-    }
+        return 1;
+    } //--- Complete
 }

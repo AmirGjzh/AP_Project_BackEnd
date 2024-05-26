@@ -1,9 +1,6 @@
 import java.io.Serial;
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 public class Course implements Serializable {
     @Serial
@@ -24,6 +21,10 @@ public class Course implements Serializable {
     private Assignment project;
 
     private final String examDate;
+
+    static String RESET = "\u001B[0m";
+    static String RED = "\u001B[31m";
+    static String GREEN = "\u001B[32m";
 //----------------------------------------------------------------------------------------------------------------------
     public Course(String name, int units, String examDate) {
         this.name = name;
@@ -74,40 +75,28 @@ public class Course implements Serializable {
     public boolean setTeacher(Teacher teacher) {
         if (teacher == null) {
             this.teacher = null;
+            return true;
         }
         if (this.teacher == null) {
             this.teacher = teacher;
-            //System.out.println("Teacher: " + teacher.getName() + " successfully set for course: " + name + ".");
             return true;
         }
         else {
-            //System.out.println("This course already has a teacher!");
             return false;
         }
-    }
+    } //--- Complete
 
     public int setProject(Assignment project) {
         if (project != null) {
-
-
-                this.project = project;
-                return 3;
-
+            this.project = project;
+            return 3;
         }
         else {
             this.project = null;
             return 2;
         }
-    }
+    } //--- Complete
 //----------------------------------------------------------------------------------------------------------------------
-    public String topStudent(double topScore) {
-        for (Student student : students.keySet()) {
-            if (students.get(student) == topScore) {
-                return student.getName() + " " + student.getLastname();
-            }
-        }
-        return null;
-    }
 
     public int addStudent(Student student) {
         for (Student s : students.keySet()) {
@@ -118,32 +107,23 @@ public class Course implements Serializable {
         students.put(student, 0.0);
         student.addCourse(this);
         return 2;
-    } //
+    } //--- Complete
 
     public int removeStudent(Student student) {
         for (Student s : students.keySet()) {
             if (s.getId().equals(student.getId())) {
                 students.remove(s);
                 student.removeCourse(this);
-                return 1;
-            }
-        }
-        //System.out.println("This student isn't in this course!");
-        return 2;
-    } //
-
-    public int addExercise(Assignment exercise) {
-        for (Assignment assignment : exercises) {
-            if (assignment.getTitle().equals(exercise.getTitle())) {
                 return 2;
             }
         }
-            //System.out.println("This exercise is already defined!");
-        System.out.println(exercises.size());
+        return 1;
+    } //--- Complete
+
+    public int addExercise(Assignment exercise) {
         exercises.add(exercise);
         return 3;
-        //System.out.println("Exercise successfully added.");
-    } //
+    } //--- Complete
 
     public int removeExercise(Assignment exercise) {
         for (Assignment assignment : exercises) {
@@ -153,30 +133,43 @@ public class Course implements Serializable {
             }
         }
         return 2;
-    } //
+    } //--- Complete
 
     public void printStudents() {
         if (students.isEmpty()) {
-            System.out.println("There is no students in the course!");
+            System.out.print("\033[H\033[2J");
+            System.out.flush();
+            System.out.println(RED + "There is no students in the course!" + RESET);
         }
         else {
-            for (Student student : students.keySet()) {
-                System.out.println(student.getName() + " " + student.getLastname() + " "  + students.get(student));
+            ArrayList<Student> students1 = new ArrayList<>(students.keySet());
+            students1.sort((a, b) -> -students.get(a).compareTo(students.get(b)));
+
+            System.out.print("\033[H\033[2J");
+            System.out.flush();
+            for (Student student : students1) {
+                System.out.println(GREEN + student.getName() + " " + student.getLastname() + ", Score: "
+                        + students.get(student) + RED);
             }
         }
-    }
+    } //--- Complete
 
-    public void addScore(Student student, Double score) {
-        students.put(student, students.get(student) + score);
-    }
-
-    public void printTopScore() {
-        double topScore = Collections.max(students.values());
-        System.out.println("The top student is " + topStudent(topScore) + " with score: " + topScore);
-
-    }
+    public int addScore(Student student, Double score) {
+        for (Student s : students.keySet()) {
+            if (s.getId().equals(student.getId())) {
+                students.put(s, students.get(s) + score);
+                return 3;
+            }
+        }
+        return 0;
+    } //--- Complete
 
     public double getScore(Student student) {
-        return students.get(student);
-    }
+        for (Student s : students.keySet()) {
+            if (s.getId().equals(student.getId())) {
+                return students.get(s);
+            }
+        }
+        return -1;
+    } //--- Complete
 }

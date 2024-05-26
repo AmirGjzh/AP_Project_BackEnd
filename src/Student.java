@@ -1,5 +1,4 @@
-import java.io.Serial;
-import java.io.Serializable;
+import java.io.*;
 import java.util.ArrayList;
 
 public class Student implements Serializable {
@@ -17,6 +16,11 @@ public class Student implements Serializable {
     private int units;
 
     private final ArrayList<Course> courses;
+
+    static String RESET = "\u001B[0m";
+    static String RED = "\u001B[31m";
+    static String GREEN = "\u001B[32m";
+    private static final String dataBaseUrl = "C:\\Users\\Sumsung\\OneDrive\\Documents\\Java\\AP_Project_BackEnd\\Data Base Files";
 //----------------------------------------------------------------------------------------------------------------------
     public Student(String name, String lastname, String id, String password) {
         this.name = name;
@@ -62,8 +66,7 @@ public class Student implements Serializable {
     public void addCourse(Course course) {
         units += course.getUnits();
         courses.add(course);
-//        System.out.println("The student added successfully.");
-    } //
+    } //--- Complete
 
     public void removeCourse(Course course) {
         units -= course.getUnits();
@@ -73,25 +76,77 @@ public class Student implements Serializable {
                 return;
             }
         }
-//        System.out.println("The student removed successfully.");
-    } //
+    } //--- Complete
 
     public void printCourses() {
         if (courses.isEmpty()) {
-            System.out.println("You don't have any courses!");
+            System.out.print("\033[H\033[2J");
+            System.out.flush();
+            System.out.println(RED + "You don't have any courses" + RESET);
         }
         else {
+            System.out.print("\033[H\033[2J");
+            System.out.flush();
             for (Course course : courses) {
-                System.out.println("Course: " + course.getName() + ", Units: " + course.getUnits());
+                System.out.println(GREEN + "Course: " + course.getName() + ", Units: " + course.getUnits() + RESET);
             }
+            System.out.println();
         }
-    }
+    } //--- Complete
 
     public void printTotalAverage() {
         double total = 0;
         for (Course course : courses) {
-            total += course.getScore(this) * course.getUnits();
+            total += getCourseFromDataBase(course.getName()).getScore(getStudentFromDataBase(id)) * course.getUnits();
         }
-        System.out.printf("Total average is %.2f.\n", total / units);
+        System.out.printf(GREEN + "Total average is %.2f\n\n" + RESET , total / units);
+    } //--- Complete
+
+    private static Course getCourseFromDataBase(String name) {
+        File dir = new File(dataBaseUrl + "\\Courses");
+        File[] files = dir.listFiles();
+
+        for (File file : files) {
+            if (file.getName().equals(name + ".txt")) {
+                try {
+                    ObjectInputStream objectInputStream = new ObjectInputStream(new FileInputStream(dataBaseUrl
+                            + "\\Courses\\" + name + ".txt"));
+                    Course course = (Course) objectInputStream.readObject();
+                    objectInputStream.close();
+                    return course;
+                }
+                catch (Exception e) {
+                    System.out.print("\033[H\033[2J");
+                    System.out.flush();
+                    System.out.println(RED + "Couldn't get course! (Exception)" + RESET);
+                    System.exit(1384);
+                }
+            }
+        }
+        return null;
+    }
+
+    private static Student getStudentFromDataBase(String id) {
+        File dir = new File(dataBaseUrl + "\\Students");
+        File[] files = dir.listFiles();
+
+        for (File file : files) {
+            if (file.getName().equals(id + ".txt")) {
+                try {
+                    ObjectInputStream objectInputStream = new ObjectInputStream(new FileInputStream(dataBaseUrl
+                            + "\\Students\\" + id + ".txt"));
+                    Student student = (Student) objectInputStream.readObject();
+                    objectInputStream.close();
+                    return student;
+                }
+                catch (Exception e) {
+                    System.out.print("\033[H\033[2J");
+                    System.out.flush();
+                    System.out.println(RED + "Couldn't get student! (Exception)" + RESET);
+                    System.exit(1384);
+                }
+            }
+        }
+        return null;
     }
 }
