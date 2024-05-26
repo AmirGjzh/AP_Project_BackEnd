@@ -30,8 +30,19 @@ public class Main {
     }
 
     private static boolean findProject(String title, String name) {
-        File file = new File(dataBaseUrl + "\\Courses\\" + name + "\\Project\\" + title + ".txt");
-        return file.isFile();
+        File dir = new File(dataBaseUrl  + "\\Courses\\" + name + "\\Project");
+        File[] files = dir.listFiles();
+
+        if (files == null) {
+            return false;
+        }
+
+        for (File file : files) {
+            if (file.getName().equals(title + ".txt")) {
+                return true;
+            }
+        }
+        return false;
     }
 
     private static Assignment getProjectFromDataBase(String title, String name) {
@@ -103,8 +114,19 @@ public class Main {
     }
 
     private static boolean findAssignment(String title, String name) {
-        File file = new File(dataBaseUrl + "\\Courses\\" + name + "\\" + title + ".txt");
-        return file.isFile();
+        File dir = new File(dataBaseUrl  + "\\Courses\\" + name);
+        File[] files = dir.listFiles();
+
+        if (files == null) {
+            return false;
+        }
+
+        for (File file : files) {
+            if (file.getName().equals(title + ".txt")) {
+                return true;
+            }
+        }
+        return false;
     }
 
     private static void removeAssignment(Assignment assignment) {
