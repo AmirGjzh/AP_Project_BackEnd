@@ -14,7 +14,7 @@ public class Teacher implements Serializable {
 
     private String password;
 
-    private ArrayList<Course> courses;
+    private final ArrayList<Course> courses;
 
     static String RESET = "\u001B[0m";
     static String RED = "\u001B[31m";

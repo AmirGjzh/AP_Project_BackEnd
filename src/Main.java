@@ -10,9 +10,8 @@ public class Main {
     static String RED = "\u001B[31m";
     static String GREEN = "\u001B[32m";
     static String BLUE = "\u001B[34m";
-    static String YELLOW = "\u001B[33m";
 
-
+//----------------------------------------------------------------------------------------------------------------------
 
     private static void updateProject(Assignment assignment) {
         try {
@@ -94,9 +93,7 @@ public class Main {
         return false;
     }
 
-
-
-
+//----------------------------------------------------------------------------------------------------------------------
 
     private static void updateAssignment(Assignment assignment) {
         try {
@@ -188,9 +185,7 @@ public class Main {
         return false;
     }
 
-
-
-
+//----------------------------------------------------------------------------------------------------------------------
 
     private static void updateStudent(Student student) {
         try {
@@ -274,9 +269,7 @@ public class Main {
         return !findStudentId(id);
     }
 
-
-
-
+//----------------------------------------------------------------------------------------------------------------------
 
     private static void updateCourse(Course course) {
         try {
@@ -378,9 +371,7 @@ public class Main {
         }
     }
 
-
-
-
+//----------------------------------------------------------------------------------------------------------------------
 
     private static int teacherLoginState(String username, String pass) {
         File dir = new File(dataBaseUrl + "\\Teachers");
@@ -504,9 +495,7 @@ public class Main {
         }
     }
 
-
-
-
+//----------------------------------------------------------------------------------------------------------------------
 
     public static void main(String[] args) {
         {
