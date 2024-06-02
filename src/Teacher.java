@@ -19,7 +19,9 @@ public class Teacher implements Serializable {
     static String RESET = "\u001B[0m";
     static String RED = "\u001B[31m";
     static String GREEN = "\u001B[32m";
+
 //----------------------------------------------------------------------------------------------------------------------
+
     public Teacher(String name, String lastname, String username, String password) {
         this.name = name;
         this.lastname = lastname;
@@ -51,14 +53,15 @@ public class Teacher implements Serializable {
     public void setPassword(String password) {
         this.password = password;
     }
+
 //----------------------------------------------------------------------------------------------------------------------
+
     public void printCourses() {
         if (courses.isEmpty()) {
             System.out.print("\033[H\033[2J");
             System.out.flush();
-            System.out.println(RED + "You don't have any courses" + RESET);
-        }
-        else {
+            System.out.println(RED + "You don't have any courses\n" + RESET);
+        } else {
             System.out.print("\033[H\033[2J");
             System.out.flush();
             for (Course course : courses) {
@@ -66,7 +69,7 @@ public class Teacher implements Serializable {
             }
             System.out.println();
         }
-    } //--- Complete
+    } //--- Completed ---//
 
     public int addCourse(Course course) {
         for (Course c : courses) {
@@ -77,11 +80,10 @@ public class Teacher implements Serializable {
         if (course.setTeacher(this)) {
             courses.add(course);
             return 3;
-        }
-        else {
+        } else {
             return 2;
         }
-    } //--- Complete
+    } //--- Completed ---//
 
     public int removeCourse(Course course) {
         for (Course c : courses) {
@@ -92,7 +94,7 @@ public class Teacher implements Serializable {
             }
         }
         return 1;
-    } //--- Complete
+    } //--- Completed ---//
 
     public int addStudentToCourse(Student student, Course course) {
         for (Course c : courses) {
@@ -101,7 +103,7 @@ public class Teacher implements Serializable {
             }
         }
         return 3;
-    } //--- Complete
+    } //--- Completed ---//
 
     public int removeStudentFromCourse(Student student, Course course) {
         for (Course c : courses) {
@@ -110,7 +112,7 @@ public class Teacher implements Serializable {
             }
         }
         return 3;
-    } //--- Complete
+    } //--- Completed ---//
 
     public int addExerciseToCourse(Assignment exercise, Course course) {
         for (Course c : courses) {
@@ -119,7 +121,7 @@ public class Teacher implements Serializable {
             }
         }
         return 1;
-    } //--- Complete
+    } //--- Completed ---//
 
     public int removeExerciseFromCourse(Assignment exercise, Course course) {
         for (Course c : courses) {
@@ -127,9 +129,8 @@ public class Teacher implements Serializable {
                 return course.removeExercise(exercise);
             }
         }
-
         return 1;
-    } //--- Complete
+    } //--- Completed ---//
 
     public int addProjectToCourse(Assignment project, Course course) {
         for (Course c : courses) {
@@ -138,7 +139,7 @@ public class Teacher implements Serializable {
             }
         }
         return 1;
-    } //--- Complete
+    } //--- Completed ---//
 
     public int removeProjectFromCourse(Assignment project, Course course) {
         for (Course c : courses) {
@@ -147,7 +148,7 @@ public class Teacher implements Serializable {
             }
         }
         return 1;
-    } //--- Complete
+    } //--- Completed ---//
 
     public int changeDeadLine(Assignment assignment, int newDeadLine) {
         for (Course course : courses) {
@@ -156,7 +157,7 @@ public class Teacher implements Serializable {
             }
         }
         return 1;
-    } //--- Complete
+    } //--- Completed ---//
 
     public int addScoreToStudent(Student student, Course course, Double score) {
         for (Course c : courses) {
@@ -170,5 +171,5 @@ public class Teacher implements Serializable {
             }
         }
         return 1;
-    } //--- Complete
+    } //--- Completed ---//
 }

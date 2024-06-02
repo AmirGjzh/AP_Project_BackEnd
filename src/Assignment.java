@@ -12,7 +12,9 @@ public class Assignment implements Serializable {
     private int deadLine;
 
     private boolean isActive;
+
 //----------------------------------------------------------------------------------------------------------------------
+
     public Assignment(String title, Course course, int deadLine) {
         this.title = title;
         this.course = course;
@@ -44,5 +46,4 @@ public class Assignment implements Serializable {
     public void setActive(boolean active) {
         isActive = active;
     }
-//----------------------------------------------------------------------------------------------------------------------
 }

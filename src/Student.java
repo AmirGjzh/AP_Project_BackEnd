@@ -21,7 +21,9 @@ public class Student implements Serializable {
     static String RED = "\u001B[31m";
     static String GREEN = "\u001B[32m";
     private static final String dataBaseUrl = "C:\\Users\\Sumsung\\OneDrive\\Documents\\Java\\AP_Project_BackEnd\\Data Base Files";
+
 //----------------------------------------------------------------------------------------------------------------------
+
     public Student(String name, String lastname, String id, String password) {
         this.name = name;
         this.lastname = lastname;
@@ -62,11 +64,13 @@ public class Student implements Serializable {
     public ArrayList<Course> getCourses() {
         return courses;
     }
+
 //----------------------------------------------------------------------------------------------------------------------
+
     public void addCourse(Course course) {
         units += course.getUnits();
         courses.add(course);
-    } //--- Complete
+    } //--- Completed ---//
 
     public void removeCourse(Course course) {
         units -= course.getUnits();
@@ -76,15 +80,14 @@ public class Student implements Serializable {
                 return;
             }
         }
-    } //--- Complete
+    } //--- Completed ---//
 
     public void printCourses() {
         if (courses.isEmpty()) {
             System.out.print("\033[H\033[2J");
             System.out.flush();
-            System.out.println(RED + "You don't have any courses" + RESET);
-        }
-        else {
+            System.out.println(RED + "You don't have any courses\n" + RESET);
+        } else {
             System.out.print("\033[H\033[2J");
             System.out.flush();
             for (Course course : courses) {
@@ -92,61 +95,59 @@ public class Student implements Serializable {
             }
             System.out.println();
         }
-    } //--- Complete
+    } //--- Completed ---//
 
     public void printTotalAverage() {
         double total = 0;
         for (Course course : courses) {
             total += getCourseFromDataBase(course.getName()).getScore(getStudentFromDataBase(id)) * course.getUnits();
         }
-        System.out.printf(GREEN + "Total average is %.2f\n\n" + RESET , total / units);
-    } //--- Complete
+        System.out.printf(GREEN + "Total average is %.2f\n\n" + RESET, total / units);
+    } //--- Completed ---//
 
     private static Course getCourseFromDataBase(String name) {
-        File dir = new File(dataBaseUrl + "\\Courses");
-        File[] files = dir.listFiles();
+        try {
+            File dir = new File(dataBaseUrl + "\\Courses");
+            File[] files = dir.listFiles();
 
-        for (File file : files) {
-            if (file.getName().equals(name + ".txt")) {
-                try {
+            for (File file : files) {
+                if (file.getName().equals(name + ".txt")) {
                     ObjectInputStream objectInputStream = new ObjectInputStream(new FileInputStream(dataBaseUrl
                             + "\\Courses\\" + name + ".txt"));
                     Course course = (Course) objectInputStream.readObject();
                     objectInputStream.close();
                     return course;
                 }
-                catch (Exception e) {
-                    System.out.print("\033[H\033[2J");
-                    System.out.flush();
-                    System.out.println(RED + "Couldn't get course! (Exception)" + RESET);
-                    System.exit(1384);
-                }
             }
+        } catch (Exception e) {
+            System.out.print("\033[H\033[2J");
+            System.out.flush();
+            System.out.println(RED + "Couldn't get course! (Exception)" + RESET);
+            System.exit(1384);
         }
         return null;
-    }
+    } //--- Completed ---//
 
     private static Student getStudentFromDataBase(String id) {
-        File dir = new File(dataBaseUrl + "\\Students");
-        File[] files = dir.listFiles();
+        try {
+            File dir = new File(dataBaseUrl + "\\Students");
+            File[] files = dir.listFiles();
 
-        for (File file : files) {
-            if (file.getName().equals(id + ".txt")) {
-                try {
+            for (File file : files) {
+                if (file.getName().equals(id + ".txt")) {
                     ObjectInputStream objectInputStream = new ObjectInputStream(new FileInputStream(dataBaseUrl
                             + "\\Students\\" + id + ".txt"));
                     Student student = (Student) objectInputStream.readObject();
                     objectInputStream.close();
                     return student;
                 }
-                catch (Exception e) {
-                    System.out.print("\033[H\033[2J");
-                    System.out.flush();
-                    System.out.println(RED + "Couldn't get student! (Exception)" + RESET);
-                    System.exit(1384);
-                }
             }
+        } catch (Exception e) {
+            System.out.print("\033[H\033[2J");
+            System.out.flush();
+            System.out.println(RED + "Couldn't get student! (Exception)" + RESET);
+            System.exit(1384);
         }
         return null;
-    }
+    } //--- Completed ---//
 }

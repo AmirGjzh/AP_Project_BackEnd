@@ -19,17 +19,16 @@ public class Main {
                     + "\\Courses\\" + assignment.getCourse().getName() + "\\Project\\" + assignment.getTitle() + ".txt"));
             objectOutputStream.writeObject(assignment);
             objectOutputStream.close();
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             System.out.print("\033[H\033[2J");
             System.out.flush();
             System.out.println(RED + "Couldn't update project! (Exception)" + RESET);
             System.exit(1384);
         }
-    }
+    } //--- Completed ---//
 
     private static boolean findProject(String title, String name) {
-        File dir = new File(dataBaseUrl  + "\\Courses\\" + name + "\\Project");
+        File dir = new File(dataBaseUrl + "\\Courses\\" + name + "\\Project");
         File[] files = dir.listFiles();
 
         if (files == null) {
@@ -42,30 +41,29 @@ public class Main {
             }
         }
         return false;
-    }
+    } //--- Completed ---//
 
     private static Assignment getProjectFromDataBase(String title, String name) {
         try {
-        ObjectInputStream objectInputStream = new ObjectInputStream(new FileInputStream(dataBaseUrl +
-                "\\Courses\\" + name + "\\Project\\" + title + ".txt"));
-        Assignment assignment = (Assignment) objectInputStream.readObject();
-        objectInputStream.close();
-        return assignment;
-        }
-        catch (Exception e) {
+            ObjectInputStream objectInputStream = new ObjectInputStream(new FileInputStream(dataBaseUrl +
+                    "\\Courses\\" + name + "\\Project\\" + title + ".txt"));
+            Assignment assignment = (Assignment) objectInputStream.readObject();
+            objectInputStream.close();
+            return assignment;
+        } catch (Exception e) {
             System.out.print("\033[H\033[2J");
             System.out.flush();
             System.out.println(RED + "Couldn't get project! (Exception)" + RESET);
             System.exit(1384);
         }
         return null;
-    }
+    } //--- Completed ---//
 
     private static void removeProject(Assignment assignment) {
         File file = new File(dataBaseUrl + "\\Courses\\" + assignment.getCourse().getName() +
                 "\\Project\\" + assignment.getTitle() + ".txt");
         file.delete();
-    }
+    } //--- Completed ---//
 
     private static boolean addProject(String title, Course course, int deadLine) {
         try {
@@ -83,35 +81,33 @@ public class Main {
 
             objectOutputStream.close();
             return true;
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             System.out.print("\033[H\033[2J");
             System.out.flush();
             System.out.println(RED + "Couldn't add project! (Exception)" + RESET);
             System.exit(1384);
         }
         return false;
-    }
+    } //--- Completed ---//
 
 //----------------------------------------------------------------------------------------------------------------------
 
-    private static void updateAssignment(Assignment assignment) {
+    private static void updateExercise(Assignment assignment) {
         try {
             ObjectOutputStream objectOutputStream = new ObjectOutputStream(new FileOutputStream(dataBaseUrl
                     + "\\Courses\\" + assignment.getCourse().getName() + "\\" + assignment.getTitle() + ".txt"));
             objectOutputStream.writeObject(assignment);
             objectOutputStream.close();
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             System.out.print("\033[H\033[2J");
             System.out.flush();
-            System.out.println(RED + "Couldn't update assignment! (Exception)" + RESET);
+            System.out.println(RED + "Couldn't update exercise! (Exception)" + RESET);
             System.exit(1384);
         }
-    }
+    } //--- Completed ---//
 
-    private static boolean findAssignment(String title, String name) {
-        File dir = new File(dataBaseUrl  + "\\Courses\\" + name);
+    private static boolean findExercise(String title, String name) {
+        File dir = new File(dataBaseUrl + "\\Courses\\" + name);
         File[] files = dir.listFiles();
 
         if (files == null) {
@@ -124,40 +120,38 @@ public class Main {
             }
         }
         return false;
-    }
+    } //--- Completed ---//
 
-    private static void removeAssignment(Assignment assignment) {
+    private static void removeExercise(Assignment assignment) {
         File file = new File(dataBaseUrl + "\\Courses\\" + assignment.getCourse().getName() +
                 "\\" + assignment.getTitle() + ".txt");
         file.delete();
-    }
+    } //--- Completed ---//
 
-    private static Assignment getAssignmentFromDataBase(String title, String name) {
-        File dir = new File(dataBaseUrl + "\\Courses\\" + name);
-        File[] files = dir.listFiles();
+    private static Assignment getExerciseFromDataBase(String title, String name) {
+        try {
+            File dir = new File(dataBaseUrl + "\\Courses\\" + name);
+            File[] files = dir.listFiles();
 
-        for (File file : files) {
-            if (file.getName().equals(title + ".txt")) {
-                try {
+            for (File file : files) {
+                if (file.getName().equals(title + ".txt")) {
                     ObjectInputStream objectInputStream = new ObjectInputStream(new FileInputStream(dataBaseUrl
                             + "\\Courses\\" + name + "\\" + title + ".txt"));
                     Assignment assignment = (Assignment) objectInputStream.readObject();
                     objectInputStream.close();
                     return assignment;
                 }
-                catch (Exception e) {
-                    System.out.print("\033[H\033[2J");
-                    System.out.flush();
-                    System.out.println(RED + "Couldn't get assignment! (Exception)" + RESET);
-                    System.exit(1384);
-                }
             }
+        } catch (Exception e) {
+            System.out.print("\033[H\033[2J");
+            System.out.flush();
+            System.out.println(RED + "Couldn't get exercise! (Exception)" + RESET);
+            System.exit(1384);
         }
-
         return null;
-    }
+    } //--- Completed ---//
 
-    private static boolean addAssignment(String title, Course course, int deadLine) {
+    private static boolean addExercise(String title, Course course, int deadLine) {
         try {
             File dir = new File(dataBaseUrl + "\\Courses\\" + course.getName());
             File[] files = dir.listFiles();
@@ -175,15 +169,14 @@ public class Main {
 
             objectOutputStream.close();
             return true;
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             System.out.print("\033[H\033[2J");
             System.out.flush();
-            System.out.println(RED + "Couldn't add assignment! (Exception)" + RESET);
+            System.out.println(RED + "Couldn't add exercise! (Exception)" + RESET);
             System.exit(1384);
         }
         return false;
-    }
+    } //--- Completed ---//
 
 //----------------------------------------------------------------------------------------------------------------------
 
@@ -193,43 +186,45 @@ public class Main {
                     + "\\Students\\" + student.getId() + ".txt"));
             objectOutputStream.writeObject(student);
             objectOutputStream.close();
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             System.out.print("\033[H\033[2J");
             System.out.flush();
             System.out.println(RED + "Couldn't update student! (Exception)" + RESET);
             System.exit(1384);
         }
-    }
+    } //--- Completed ---//
 
     private static Student getStudentFromDataBase(String id) {
-        File dir = new File(dataBaseUrl + "\\Students");
-        File[] files = dir.listFiles();
+        try {
+            File dir = new File(dataBaseUrl + "\\Students");
+            File[] files = dir.listFiles();
 
-        for (File file : files) {
-            if (file.getName().equals(id + ".txt")) {
-                try {
+            for (File file : files) {
+                if (file.getName().equals(id + ".txt")) {
                     ObjectInputStream objectInputStream = new ObjectInputStream(new FileInputStream(dataBaseUrl
                             + "\\Students\\" + id + ".txt"));
                     Student student = (Student) objectInputStream.readObject();
                     objectInputStream.close();
                     return student;
                 }
-                catch (Exception e) {
-                    System.out.print("\033[H\033[2J");
-                    System.out.flush();
-                    System.out.println(RED + "Couldn't get student! (Exception)" + RESET);
-                    System.exit(1384);
-                }
             }
+        } catch (Exception e) {
+            System.out.print("\033[H\033[2J");
+            System.out.flush();
+            System.out.println(RED + "Couldn't get student! (Exception)" + RESET);
+            System.exit(1384);
         }
         return null;
-    }
+    } //--- Completed ---//
+
+    private static boolean studentIdJustNumber(String id) {
+        return id.matches("^[0-9]+$");
+    } //--- Completed ---//
 
     private static void removeStudent(String id) {
         File file = new File(dataBaseUrl + "\\Students\\" + id + ".txt");
         file.delete();
-    }
+    } //--- Completed ---//
 
     private static void addStudent(String id, String pass, String name, String lastname) {
         try {
@@ -239,14 +234,13 @@ public class Main {
             objectOutputStream.writeObject(new Student(name, lastname, id, pass));
 
             objectOutputStream.close();
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             System.out.print("\033[H\033[2J");
             System.out.flush();
             System.out.println(RED + "Couldn't add student! (Exception)" + RESET);
             System.exit(1384);
         }
-    }
+    } //--- Completed ---//
 
     private static boolean findStudentId(String id) {
         File dir = new File(dataBaseUrl + "\\Students");
@@ -263,11 +257,11 @@ public class Main {
         }
 
         return false;
-    }
+    } //--- Completed ---//
 
     private static boolean studentIdValidation(String id) {
         return !findStudentId(id);
-    }
+    } //--- Completed ---//
 
 //----------------------------------------------------------------------------------------------------------------------
 
@@ -277,60 +271,57 @@ public class Main {
                     + "\\Courses\\" + course.getName() + ".txt"));
             objectOutputStream.writeObject(course);
             objectOutputStream.close();
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             System.out.print("\033[H\033[2J");
             System.out.flush();
             System.out.println(RED + "Couldn't update course! (Exception)" + RESET);
             System.exit(1384);
         }
-    }
+    } //--- Completed ---//
 
     private static Course getCourseFromDataBase(String name) {
-        File dir = new File(dataBaseUrl + "\\Courses");
-        File[] files = dir.listFiles();
+        try {
+            File dir = new File(dataBaseUrl + "\\Courses");
+            File[] files = dir.listFiles();
 
-        for (File file : files) {
-            if (file.getName().equals(name + ".txt")) {
-                try {
+            for (File file : files) {
+                if (file.getName().equals(name + ".txt")) {
                     ObjectInputStream objectInputStream = new ObjectInputStream(new FileInputStream(dataBaseUrl
                             + "\\Courses\\" + name + ".txt"));
                     Course course = (Course) objectInputStream.readObject();
                     objectInputStream.close();
                     return course;
                 }
-                catch (Exception e) {
-                    System.out.print("\033[H\033[2J");
-                    System.out.flush();
-                    System.out.println(RED + "Couldn't get course! (Exception)" + RESET);
-                    System.exit(1384);
-                }
             }
+        } catch (Exception e) {
+            System.out.print("\033[H\033[2J");
+            System.out.flush();
+            System.out.println(RED + "Couldn't get course! (Exception)" + RESET);
+            System.exit(1384);
         }
         return null;
-    }
+    } //--- Completed ---//
 
     private static void deleteDirectory(File file) {
         File[] files = file.listFiles();
         for (File f : files) {
             if (f.isDirectory()) {
                 deleteDirectory(f);
-            }
-            else {
+            } else {
                 f.delete();
             }
         }
         file.delete();
-    }
+    } //--- Completed ---//
 
     private static void removeCourse(String name) {
         File file = new File(dataBaseUrl + "\\Courses\\" + name + ".txt");
         file.delete();
         deleteDirectory(new File(dataBaseUrl + "\\Courses\\" + name));
-    }
+    } //--- Completed ---//
 
     private static boolean findCourseName(String name) {
-        File dir = new File(dataBaseUrl  + "\\Courses");
+        File dir = new File(dataBaseUrl + "\\Courses");
         File[] files = dir.listFiles();
 
         if (files == null) {
@@ -343,13 +334,13 @@ public class Main {
             }
         }
         return false;
-    }
+    } //--- Completed ---//
 
     private static boolean courseNameValidation(String name) {
         return !findCourseName(name);
-    }
+    } //--- Completed ---//
 
-    private static void addCourse(String name, int units, String examDate) {
+    private static void addCourse(String name, int units, int examDate) {
         try {
             File dir = new File(dataBaseUrl + "\\Courses\\" + name);
             dir.mkdirs();
@@ -362,49 +353,46 @@ public class Main {
             objectOutputStream.writeObject(new Course(name, units, examDate));
 
             objectOutputStream.close();
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             System.out.print("\033[H\033[2J");
             System.out.flush();
             System.out.println(RED + "Couldn't add course! (Exception)" + RESET);
             System.exit(1384);
         }
-    }
+    } //--- Completed ---//
 
 //----------------------------------------------------------------------------------------------------------------------
 
     private static int teacherLoginState(String username, String pass) {
-        File dir = new File(dataBaseUrl + "\\Teachers");
-        File[] files = dir.listFiles();
+        try {
+            File dir = new File(dataBaseUrl + "\\Teachers");
+            File[] files = dir.listFiles();
 
-        if (files == null) {
-            return 1;
-        }
+            if (files == null) {
+                return 1;
+            }
 
-        for (File file : files) {
-            if (file.getName().equals(username + ".txt")) {
-                try {
+            for (File file : files) {
+                if (file.getName().equals(username + ".txt")) {
                     ObjectInputStream objectInputStream = new ObjectInputStream(new FileInputStream(dataBaseUrl
                             + "\\Teachers\\" + username + ".txt"));
                     Teacher teacher = (Teacher) objectInputStream.readObject();
                     objectInputStream.close();
                     if (teacher.getPassword().equals(pass)) {
                         return 0;
-                    }
-                    else {
+                    } else {
                         return 2;
                     }
                 }
-                catch (Exception e) {
-                    System.out.print("\033[H\033[2J");
-                    System.out.flush();
-                    System.out.println(RED + "Couldn't login! (Exception)" + RESET);
-                    System.exit(1384);
-                }
             }
+        } catch (Exception e) {
+            System.out.print("\033[H\033[2J");
+            System.out.flush();
+            System.out.println(RED + "Couldn't login! (Exception)" + RESET);
+            System.exit(1384);
         }
         return 1;
-    }
+    } //--- Completed ---//
 
     private static void updateTeacher(Teacher teacher) {
         try {
@@ -412,43 +400,41 @@ public class Main {
                     + "\\Teachers\\" + teacher.getUsername() + ".txt"));
             objectOutputStream.writeObject(teacher);
             objectOutputStream.close();
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             System.out.print("\033[H\033[2J");
             System.out.flush();
             System.out.println(RED + "Couldn't update teacher! (Exception)" + RESET);
             System.exit(1384);
         }
-    }
+    } //--- Completed ---//
 
     private static Teacher getTeacherFromDataBase(String username) {
-        File dir = new File(dataBaseUrl + "\\Teachers");
-        File[] files = dir.listFiles();
+        try {
+            File dir = new File(dataBaseUrl + "\\Teachers");
+            File[] files = dir.listFiles();
 
-        for (File file : files) {
-            if (file.getName().equals(username + ".txt")) {
-                try {
+            for (File file : files) {
+                if (file.getName().equals(username + ".txt")) {
                     ObjectInputStream objectInputStream = new ObjectInputStream(new FileInputStream(dataBaseUrl
                             + "\\Teachers\\" + username + ".txt"));
                     Teacher teacher = (Teacher) objectInputStream.readObject();
                     objectInputStream.close();
                     return teacher;
                 }
-                catch (Exception e) {
-                    System.out.print("\033[H\033[2J");
-                    System.out.flush();
-                    System.out.println(RED + "Couldn't get teacher! (Exception)" + RESET);
-                    System.exit(1384);
-                }
             }
+        } catch (Exception e) {
+            System.out.print("\033[H\033[2J");
+            System.out.flush();
+            System.out.println(RED + "Couldn't get teacher! (Exception)" + RESET);
+            System.exit(1384);
         }
         return null;
-    }
+    } //--- Completed ---//
 
     private static void removeTeacher(String username) {
         File file = new File(dataBaseUrl + "\\Teachers\\" + username + ".txt");
         file.delete();
-    }
+    } //--- Completed ---//
 
     private static boolean passValidation(String pass, String username) {
         Pattern pattern1 = Pattern.compile(".*[A-Z].*");
@@ -456,7 +442,7 @@ public class Main {
         Pattern pattern3 = Pattern.compile(".*\\d.*");
         return pass.length() >= 8 && !pass.contains(username) && pattern1.matcher(pass).matches() &&
                 pattern2.matcher(pass).matches() && pattern3.matcher(pass).matches();
-    }
+    } //--- Completed ---//
 
     private static boolean findTeacherUsername(String username) {
         File[] files = new File(dataBaseUrl + "\\Teachers").listFiles();
@@ -472,11 +458,11 @@ public class Main {
         }
 
         return false;
-    }
+    } //--- Completed ---//
 
     private static boolean teacherUserValidation(String username) {
         return !findTeacherUsername(username);
-    }
+    } //--- Completed ---//
 
     private static void addTeacher(String username, String pass, String name, String lastname) {
         try {
@@ -486,14 +472,13 @@ public class Main {
             objectOutputStream.writeObject(new Teacher(name, lastname, username, pass));
 
             objectOutputStream.close();
-        }
-        catch (Exception exception) {
+        } catch (Exception exception) {
             System.out.print("\033[H\033[2J");
             System.out.flush();
             System.out.println(RED + "Couldn't add teacher! (Exception)" + RESET);
             System.exit(1384);
         }
-    }
+    } //--- Completed ---//
 
 //----------------------------------------------------------------------------------------------------------------------
 
@@ -600,7 +585,7 @@ public class Main {
                                 } //--- End task
 
                                 break;
-                            } //--- Add teacher
+                            } //--- Add new teacher ---//
                             case 2: {
                                 {
                                     System.out.print("\033[H\033[2J");
@@ -628,7 +613,7 @@ public class Main {
                                 } //--- End task
 
                                 break;
-                            } //--- Remove teacher
+                            } //--- Remove teacher ---//
                             case 3: {
                                 {
                                     System.out.print("\033[H\033[2J");
@@ -638,7 +623,7 @@ public class Main {
 
                                 String name;
                                 int units;
-                                String examDate;
+                                int examDate;
 
                                 {
                                     System.out.println(BLUE + "Enter course name" + RESET);
@@ -652,7 +637,7 @@ public class Main {
                                     units = input.nextInt();
 
                                     System.out.println(BLUE + "Enter exam date" + RESET);
-                                    examDate = input.next();
+                                    examDate = input.nextInt();
                                 } //--- Get info
 
                                 addCourse(name, units, examDate);
@@ -664,7 +649,7 @@ public class Main {
                                 } //--- End task
 
                                 break;
-                            } //--- Add course
+                            } //--- Add course ---//
                             case 4: {
                                 {
                                     System.out.print("\033[H\033[2J");
@@ -692,7 +677,7 @@ public class Main {
                                 } //--- End task
 
                                 break;
-                            } //--- Remove course
+                            } //--- Remove course ---//
                             case 5: {
                                 {
                                     System.out.print("\033[H\033[2J");
@@ -709,6 +694,10 @@ public class Main {
                                 {
                                     System.out.println(BLUE + "Enter student id" + RESET);
                                     id = input.next();
+                                    while (!studentIdJustNumber(id)) {
+                                        System.out.println(RED + "Id can only contain numbers! Try again" + RESET);
+                                        id = input.next();
+                                    }
                                     while (!studentIdValidation(id)) {
                                         System.out.println(RED + "This id has already been used! Try again" + RESET);
                                         id = input.next();
@@ -742,7 +731,7 @@ public class Main {
                                 } //--- End task
 
                                 break;
-                            } //--- Add student
+                            } //--- Add student ---//
                             case 6: {
                                 {
                                     System.out.print("\033[H\033[2J");
@@ -756,8 +745,6 @@ public class Main {
                                     System.out.println(BLUE + "Enter student id to remove" + RESET);
                                     id = input.next();
                                     while (!findStudentId(id)) {
-                                        System.out.print("\033[H\033[2J");
-                                        System.out.flush();
                                         System.out.println(RED + "Id not found! Try again" + RESET);
                                         id = input.next();
                                     }
@@ -772,7 +759,7 @@ public class Main {
                                 } //--- End task
 
                                 break;
-                            } //--- Remove student
+                            } //--- Remove student ---//
                             case 7: {
                                 {
                                     System.out.print("\033[H\033[2J");
@@ -806,7 +793,7 @@ public class Main {
                                     case 1:
                                         System.out.print("\033[H\033[2J");
                                         System.out.flush();
-                                        System.out.println(RED + "This teacher already have this course\n" + RESET);
+                                        System.out.println(RED + "This teacher already has this course\n" + RESET);
                                         break;
                                     case 2:
                                         System.out.print("\033[H\033[2J");
@@ -823,7 +810,7 @@ public class Main {
                                 } //--- End task
 
                                 break;
-                            } //--- Add a course for a teacher
+                            } //--- Add a course for a teacher ---//
                             case 8: {
                                 {
                                     System.out.print("\033[H\033[2J");
@@ -864,12 +851,12 @@ public class Main {
                                         updateTeacher(teacher);
                                         System.out.print("\033[H\033[2J");
                                         System.out.flush();
-                                        System.out.println(GREEN + "Successfully removed" + RESET);
+                                        System.out.println(GREEN + "Successfully removed\n" + RESET);
                                         break;
                                 } //--- End task
 
                                 break;
-                            } //--- Remove a course from a teacher
+                            } //--- Remove a course from a teacher ---//
                             case 9: {
                                 {
                                     System.out.print("\033[H\033[2J");
@@ -915,7 +902,7 @@ public class Main {
                                 } //--- End task
 
                                 break;
-                            } //--- Add a student to a course
+                            } //--- Add a student to a course ---//
                             case 10: {
                                 {
                                     System.out.print("\033[H\033[2J");
@@ -961,7 +948,7 @@ public class Main {
                                 } //--- End task
 
                                 break;
-                            } //--- Remove a student from a course
+                            } //--- Remove a student from a course ---//
                             case 11: {
                                 {
                                     System.out.print("\033[H\033[2J");
@@ -984,7 +971,7 @@ public class Main {
                                 course.printStudents();
 
                                 break;
-                            } //--- Show students of a course
+                            } //--- Show students of a course ---//
                             case 12: {
                                 {
                                     System.out.print("\033[H\033[2J");
@@ -1018,15 +1005,14 @@ public class Main {
                                     System.out.print("\033[H\033[2J");
                                     System.out.flush();
                                     System.out.println(RED + "This student isn't in this course\n" + RESET);
-                                }
-                                else {
+                                } else {
                                     System.out.print("\033[H\033[2J");
                                     System.out.flush();
-                                    System.out.println(GREEN + "Score: " + course.getScore(student) + "\n" + RESET);
+                                    System.out.println(GREEN + "Score: " + String.format("%.2f", course.getScore(student)) + "\n" + RESET);
                                 }
 
                                 break;
-                            } //--- Show score of a student
+                            } //--- Show score of a student ---//
                             case 13: {
                                 {
                                     System.out.print("\033[H\033[2J");
@@ -1049,7 +1035,7 @@ public class Main {
                                 student.printCourses();
 
                                 break;
-                            } //--- Show courses of a student
+                            } //--- Show courses of a student ---//
                             case 14: {
                                 {
                                     System.out.print("\033[H\033[2J");
@@ -1072,7 +1058,7 @@ public class Main {
                                 student.printTotalAverage();
 
                                 break;
-                            } //--- Show student average
+                            } //--- Show student average ---//
                             case 15: {
                                 {
                                     System.out.print("\033[H\033[2J");
@@ -1095,18 +1081,18 @@ public class Main {
                                 teacher.printCourses();
 
                                 break;
-                            } //--- Show courses of a teacher
+                            } //--- Show courses of a teacher ---//
                             case 16: {
                                 System.out.print("\033[H\033[2J");
                                 System.out.flush();
                                 System.out.println(RED + "Exited" + RESET);
                                 break out1;
-                            } //--- Exit
+                            } //--- Exit ---//
                             default: {
                                 System.out.print("\033[H\033[2J");
                                 System.out.flush();
                                 System.out.println(RED + "Wrong answer! Try again" + RESET);
-                            } //--- Wrong answer
+                            } //--- Wrong answer ---//
                         }
                     }
                     break out;
@@ -1121,25 +1107,25 @@ public class Main {
                         System.out.println(BLUE + "Enter Your username" + RESET);
                         username = input.next();
 
-//                        System.out.println(BLUE + "Enter Your password" + RESET);
-//                        pass = input.next();
-//
-//
-//                        while (teacherLoginState(username, pass) != 0) {
-//                            switch (teacherLoginState(username, pass)) {
-//                                case 1:
-//                                    System.out.println(RED + "Username not found! Try again" + RESET);
-//                                    break;
-//                                case 2:
-//                                    System.out.println(RED + "Wrong password! Try again" + RESET);
-//                                    break;
-//                            }
-//
-//                            System.out.println(BLUE + "Enter Your username" + RESET);
-//                            username = input.next();
-//                            System.out.println(BLUE + "Enter Your password" + RESET);
-//                            pass = input.next();
-//                        }
+                        System.out.println(BLUE + "Enter Your password" + RESET);
+                        pass = input.next();
+
+
+                        while (teacherLoginState(username, pass) != 0) {
+                            switch (teacherLoginState(username, pass)) {
+                                case 1:
+                                    System.out.println(RED + "Username not found! Try again" + RESET);
+                                    break;
+                                case 2:
+                                    System.out.println(RED + "Wrong password! Try again" + RESET);
+                                    break;
+                            }
+
+                            System.out.println(BLUE + "Enter Your username" + RESET);
+                            username = input.next();
+                            System.out.println(BLUE + "Enter Your password" + RESET);
+                            pass = input.next();
+                        }
 
                         System.out.print("\033[H\033[2J");
                         System.out.flush();
@@ -1153,8 +1139,8 @@ public class Main {
                                     Choose your order:
                                     1 - Add new student to a course
                                     2 - Removing a student from a course
-                                    3 - Adding new assignment to a course
-                                    4 - Removing an assignment from a course
+                                    3 - Adding new exercise to a course
+                                    4 - Removing an exercise from a course
                                     5 - Defining project for a course
                                     6 - Removing project from a course
                                     7 - Change deadline of an assignment or project
@@ -1216,7 +1202,7 @@ public class Main {
                                 } //--- End task
 
                                 break;
-                            } //--- Add new student to a course
+                            } //--- Add new student to a course ---//
                             case 2: {
                                 {
                                     System.out.print("\033[H\033[2J");
@@ -1251,29 +1237,29 @@ public class Main {
                                     case 1:
                                         System.out.print("\033[H\033[2J");
                                         System.out.flush();
-                                        System.out.println(RED + "This student isn't in this course" + RESET);
+                                        System.out.println(RED + "This student isn't in this course\n" + RESET);
                                         break;
                                     case 2:
                                         updateCourse(course);
                                         updateStudent(student);
                                         System.out.print("\033[H\033[2J");
                                         System.out.flush();
-                                        System.out.println(GREEN + "Successfully removed" + RESET);
+                                        System.out.println(GREEN + "Successfully removed\n" + RESET);
                                         break;
                                     case 3:
                                         System.out.print("\033[H\033[2J");
                                         System.out.flush();
-                                        System.out.println(RED + "You don't have access to this course" + RESET);
+                                        System.out.println(RED + "You don't have access to this course\n" + RESET);
                                         break;
                                 } //--- End task
 
                                 break;
-                            } //--- Removing a student from a course
+                            } //--- Removing a student from a course ---//
                             case 3: {
                                 {
                                     System.out.print("\033[H\033[2J");
                                     System.out.flush();
-                                    System.out.println(BLUE + "Task -> Adding new assignment to a course" + RESET);
+                                    System.out.println(BLUE + "Task -> Adding new exercise to a course" + RESET);
                                 } //--- Show task
 
                                 String name;
@@ -1288,22 +1274,22 @@ public class Main {
                                         name = input.next();
                                     }
 
-                                    System.out.println(BLUE + "Enter assignment title" + RESET);
+                                    System.out.println(BLUE + "Enter exercise title" + RESET);
                                     title = input.next();
-                                    System.out.println(BLUE + "Enter assignment deadline" + RESET);
+                                    System.out.println(BLUE + "Enter exercise deadline" + RESET);
                                     deadLine = input.nextInt();
                                 } //--- Get info
 
                                 Course course = getCourseFromDataBase(name);
                                 Teacher teacher = getTeacherFromDataBase(username);
 
-                                if (addAssignment(title, course, deadLine)) {
+                                if (addExercise(title, course, deadLine)) {
 
-                                    Assignment assignment = getAssignmentFromDataBase(title, course.getName());
+                                    Assignment assignment = getExerciseFromDataBase(title, course.getName());
 
                                     switch (teacher.addExerciseToCourse(assignment, course)) {
                                         case 1:
-                                            removeAssignment(assignment);
+                                            removeExercise(assignment);
                                             System.out.print("\033[H\033[2J");
                                             System.out.flush();
                                             System.out.println(RED + "You don't have access to this course\n" + RESET);
@@ -1315,20 +1301,19 @@ public class Main {
                                             System.out.println(GREEN + "Successfully added\n" + RESET);
                                             break;
                                     }
-                                }
-                                else {
+                                } else {
                                     System.out.print("\033[H\033[2J");
                                     System.out.flush();
                                     System.out.println(RED + "This exercise is already defined\n" + RESET);
                                 }
 
                                 break;
-                            } //--- Adding new assignment to a course
+                            } //--- Adding new exercise to a course ---//
                             case 4: {
                                 {
                                     System.out.print("\033[H\033[2J");
                                     System.out.flush();
-                                    System.out.println(BLUE + "Task -> Removing a assignment from a course" + RESET);
+                                    System.out.println(BLUE + "Task -> Removing a exercise from a course" + RESET);
                                 } //--- Show task
 
                                 String name;
@@ -1342,18 +1327,17 @@ public class Main {
                                         name = input.next();
                                     }
 
-                                    System.out.println(BLUE + "Enter assignment title" + RESET);
+                                    System.out.println(BLUE + "Enter exercise title" + RESET);
                                     title = input.next();
-                                    while (!findAssignment(title, name)) {
-                                        System.out.println(RED + "There is no such assignment! Try again" + RESET);
+                                    while (!findExercise(title, name)) {
+                                        System.out.println(RED + "There is no such exercise! Try again" + RESET);
                                         title = input.next();
                                     }
                                 } //--- Get info
 
-
                                 Course course = getCourseFromDataBase(name);
                                 Teacher teacher = getTeacherFromDataBase(username);
-                                Assignment assignment = getAssignmentFromDataBase(title, course.getName());
+                                Assignment assignment = getExerciseFromDataBase(title, course.getName());
 
                                 switch (teacher.removeExerciseFromCourse(assignment, course)) {
                                     case 1:
@@ -1363,7 +1347,7 @@ public class Main {
                                         break;
                                     case 3:
                                         updateCourse(course);
-                                        removeAssignment(assignment);
+                                        removeExercise(assignment);
                                         System.out.print("\033[H\033[2J");
                                         System.out.flush();
                                         System.out.println(GREEN + "successfully removed\n" + RESET);
@@ -1371,7 +1355,7 @@ public class Main {
                                 }
 
                                 break;
-                            } //--- Removing an assignment from a course
+                            } //--- Removing an exercise from a course ---//
                             case 5: {
                                 {
                                     System.out.print("\033[H\033[2J");
@@ -1418,13 +1402,14 @@ public class Main {
                                             System.out.println(GREEN + "Successfully defined\n" + RESET);
                                             break;
                                     }
-                                }
-                                else {
-                                    System.out.println(RED + "Project is already defined" + RESET);
+                                } else {
+                                    System.out.print("\033[H\033[2J");
+                                    System.out.flush();
+                                    System.out.println(RED + "Project is already defined\n" + RESET);
                                 }
 
                                 break;
-                            } //--- Defining project for a course
+                            } //--- Defining project for a course ---//
                             case 6: {
                                 {
                                     System.out.print("\033[H\033[2J");
@@ -1471,7 +1456,7 @@ public class Main {
                                 }
 
                                 break;
-                            } //--- Removing project from a course
+                            } //--- Removing project from a course ---//
                             case 7: {
                                 {
                                     System.out.print("\033[H\033[2J");
@@ -1492,8 +1477,8 @@ public class Main {
                                         name = input.next();
                                     }
 
-                                    System.out.println(BLUE + "You want to change deadline of an assignment or project?"
-                                            + " (assignment = 1, project = 2)" + RESET);
+                                    System.out.println(BLUE + "You want to change deadline of an exercise or project?"
+                                            + " (exercise = 1, project = 2)" + RESET);
                                     isProject = input.nextInt();
 
                                     System.out.println(BLUE + "Enter new deadline" + RESET);
@@ -1501,10 +1486,10 @@ public class Main {
 
                                     switch (isProject) {
                                         case 1:
-                                            System.out.println(BLUE + "Enter assignment title" + RESET);
+                                            System.out.println(BLUE + "Enter exercise title" + RESET);
                                             title = input.next();
-                                            while (!findAssignment(title, name)) {
-                                                System.out.println(RED + "There is no such assignment! Try again" + RESET);
+                                            while (!findExercise(title, name)) {
+                                                System.out.println(RED + "There is no such exercise! Try again" + RESET);
                                                 title = input.next();
                                             }
                                             break;
@@ -1521,7 +1506,7 @@ public class Main {
 
                                 Teacher teacher = getTeacherFromDataBase(username);
                                 Assignment assignment = switch (isProject) {
-                                    case 1 -> getAssignmentFromDataBase(title, name);
+                                    case 1 -> getExerciseFromDataBase(title, name);
                                     case 2 -> getProjectFromDataBase(title, name);
                                     default -> null;
                                 };
@@ -1535,7 +1520,7 @@ public class Main {
                                     case 2:
                                         switch (isProject) {
                                             case 1:
-                                                updateAssignment(assignment);
+                                                updateExercise(assignment);
                                                 break;
                                             case 2:
                                                 updateProject(assignment);
@@ -1547,7 +1532,7 @@ public class Main {
                                 }
 
                                 break;
-                            } //--- Change deadline of an assignment or project
+                            } //--- Change deadline of an assignment or project ---//
                             case 8: {
                                 {
                                     System.out.print("\033[H\033[2J");
@@ -1602,18 +1587,18 @@ public class Main {
                                 }
 
                                 break;
-                            } //--- Add score to a student
+                            } //--- Add score to a student ---//
                             case 9: {
                                 System.out.print("\033[H\033[2J");
                                 System.out.flush();
                                 System.out.println(RED + "Exited" + RESET);
                                 break out1;
-                            } //--- Exit
+                            } //--- Exit ---//
                             default: {
                                 System.out.print("\033[H\033[2J");
                                 System.out.flush();
                                 System.out.println(RED + "Wrong answer! Try again" + RESET);
-                            } //--- Wrong answer
+                            } //--- Wrong answer ---//
                         }
                     }
                     break out;

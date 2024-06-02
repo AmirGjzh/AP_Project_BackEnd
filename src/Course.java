@@ -20,13 +20,15 @@ public class Course implements Serializable {
 
     private Assignment project;
 
-    private final String examDate;
+    private final int examDate;
 
     static String RESET = "\u001B[0m";
     static String RED = "\u001B[31m";
     static String GREEN = "\u001B[32m";
+
 //----------------------------------------------------------------------------------------------------------------------
-    public Course(String name, int units, String examDate) {
+
+    public Course(String name, int units, int examDate) {
         this.name = name;
         this.units = units;
         this.examDate = examDate;
@@ -64,7 +66,7 @@ public class Course implements Serializable {
         return project;
     }
 
-    public String getExamDate() {
+    public int getExamDate() {
         return examDate;
     }
 
@@ -80,22 +82,21 @@ public class Course implements Serializable {
         if (this.teacher == null) {
             this.teacher = teacher;
             return true;
-        }
-        else {
+        } else {
             return false;
         }
-    } //--- Complete
+    } //--- Completed ---//
 
     public int setProject(Assignment project) {
         if (project != null) {
             this.project = project;
             return 3;
-        }
-        else {
+        } else {
             this.project = null;
             return 2;
         }
-    } //--- Complete
+    } //--- Completed ---//
+
 //----------------------------------------------------------------------------------------------------------------------
 
     public int addStudent(Student student) {
@@ -107,7 +108,7 @@ public class Course implements Serializable {
         students.put(student, 0.0);
         student.addCourse(this);
         return 2;
-    } //--- Complete
+    } //--- Completed ---//
 
     public int removeStudent(Student student) {
         for (Student s : students.keySet()) {
@@ -118,12 +119,12 @@ public class Course implements Serializable {
             }
         }
         return 1;
-    } //--- Complete
+    } //--- Completed ---//
 
     public int addExercise(Assignment exercise) {
         exercises.add(exercise);
         return 3;
-    } //--- Complete
+    } //--- Completed ---//
 
     public int removeExercise(Assignment exercise) {
         for (Assignment assignment : exercises) {
@@ -133,15 +134,14 @@ public class Course implements Serializable {
             }
         }
         return 2;
-    } //--- Complete
+    } //--- Completed ---//
 
     public void printStudents() {
         if (students.isEmpty()) {
             System.out.print("\033[H\033[2J");
             System.out.flush();
-            System.out.println(RED + "There is no students in the course!" + RESET);
-        }
-        else {
+            System.out.println(RED + "There is no students in the course!\n" + RESET);
+        } else {
             ArrayList<Student> students1 = new ArrayList<>(students.keySet());
             students1.sort((a, b) -> -students.get(a).compareTo(students.get(b)));
 
@@ -151,8 +151,9 @@ public class Course implements Serializable {
                 System.out.println(GREEN + student.getName() + " " + student.getLastname() + ", Score: "
                         + students.get(student) + RED);
             }
+            System.out.println();
         }
-    } //--- Complete
+    } //--- Completed ---//
 
     public int addScore(Student student, Double score) {
         for (Student s : students.keySet()) {
@@ -162,7 +163,7 @@ public class Course implements Serializable {
             }
         }
         return 0;
-    } //--- Complete
+    } //--- Completed ---//
 
     public double getScore(Student student) {
         for (Student s : students.keySet()) {
@@ -171,5 +172,5 @@ public class Course implements Serializable {
             }
         }
         return -1;
-    } //--- Complete
+    } //--- Completed ---//
 }
