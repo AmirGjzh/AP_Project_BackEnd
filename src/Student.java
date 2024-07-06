@@ -5,11 +5,11 @@ public class Student implements Serializable {
     @Serial
     private static final long serialVersionUID = 0;
 
-    private final String name;
+    private String name;
 
-    private final String lastname;
+    private String lastname;
 
-    private final String id;
+    private String id;
 
     private String password;
 
@@ -31,6 +31,18 @@ public class Student implements Serializable {
         this.password = password;
         units = 0;
         courses = new ArrayList<>();
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setLastname(String lastname) {
+        this.lastname = lastname;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 
     public String getName() {
@@ -97,12 +109,17 @@ public class Student implements Serializable {
         }
     } //--- Completed ---//
 
-    public void printTotalAverage() {
-        double total = 0;
+    public String printTotalAverage() {
+        double total = 0.0;
+        if (units == 0) {
+            System.out.printf(GREEN + "Total average is 00.00\n\n" + RESET);
+            return "00.00";
+        }
         for (Course course : courses) {
             total += getCourseFromDataBase(course.getName()).getScore(getStudentFromDataBase(id)) * course.getUnits();
         }
         System.out.printf(GREEN + "Total average is %.2f\n\n" + RESET, total / units);
+        return String.format("%4.2f", total / units);
     } //--- Completed ---//
 
     private static Course getCourseFromDataBase(String name) {

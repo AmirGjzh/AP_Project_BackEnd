@@ -4,7 +4,7 @@ import java.util.regex.Pattern;
 
 public class Main {
 
-    private static final String dataBaseUrl = "C:\\Users\\Sumsung\\OneDrive\\Documents\\Java\\AP_Project_BackEnd\\Data Base Files";
+    static final String dataBaseUrl = "C:\\Users\\Sumsung\\OneDrive\\Documents\\Java\\AP_Project_BackEnd\\Data Base Files";
 
     static String RESET = "\u001B[0m";
     static String RED = "\u001B[31m";
@@ -92,7 +92,7 @@ public class Main {
 
 //----------------------------------------------------------------------------------------------------------------------
 
-    private static void updateExercise(Assignment assignment) {
+    static void updateExercise(Assignment assignment) {
         try {
             ObjectOutputStream objectOutputStream = new ObjectOutputStream(new FileOutputStream(dataBaseUrl
                     + "\\Courses\\" + assignment.getCourse().getName() + "\\" + assignment.getTitle() + ".txt"));
@@ -128,7 +128,7 @@ public class Main {
         file.delete();
     } //--- Completed ---//
 
-    private static Assignment getExerciseFromDataBase(String title, String name) {
+    static Assignment getExerciseFromDataBase(String title, String name) {
         try {
             File dir = new File(dataBaseUrl + "\\Courses\\" + name);
             File[] files = dir.listFiles();
@@ -180,7 +180,7 @@ public class Main {
 
 //----------------------------------------------------------------------------------------------------------------------
 
-    private static void updateStudent(Student student) {
+    static void updateStudent(Student student) {
         try {
             ObjectOutputStream objectOutputStream = new ObjectOutputStream(new FileOutputStream(dataBaseUrl
                     + "\\Students\\" + student.getId() + ".txt"));
@@ -194,7 +194,7 @@ public class Main {
         }
     } //--- Completed ---//
 
-    private static Student getStudentFromDataBase(String id) {
+    static Student getStudentFromDataBase(String id) {
         try {
             File dir = new File(dataBaseUrl + "\\Students");
             File[] files = dir.listFiles();
@@ -221,12 +221,18 @@ public class Main {
         return id.matches("^[0-9]+$");
     } //--- Completed ---//
 
-    private static void removeStudent(String id) {
+    static void removeStudent(String id) {
+        for (Course course : getStudentFromDataBase(id).getCourses()) {
+            course.removeStudent(getStudentFromDataBase(id));
+        }
+
         File file = new File(dataBaseUrl + "\\Students\\" + id + ".txt");
+        file.delete();
+        file = new File(dataBaseUrl + "\\Tasks\\" + id + ".txt");
         file.delete();
     } //--- Completed ---//
 
-    private static void addStudent(String id, String pass, String name, String lastname) {
+    static void addStudent(String id, String pass, String name, String lastname) {
         try {
             ObjectOutputStream objectOutputStream = new ObjectOutputStream(new FileOutputStream(dataBaseUrl + "\\Students\\"
                     + id + ".txt"));
@@ -234,6 +240,9 @@ public class Main {
             objectOutputStream.writeObject(new Student(name, lastname, id, pass));
 
             objectOutputStream.close();
+
+            File file = new File(dataBaseUrl + "\\Tasks\\" + id + ".txt");
+            file.createNewFile();
         } catch (Exception e) {
             System.out.print("\033[H\033[2J");
             System.out.flush();
@@ -242,7 +251,7 @@ public class Main {
         }
     } //--- Completed ---//
 
-    private static boolean findStudentId(String id) {
+    static boolean findStudentId(String id) {
         File dir = new File(dataBaseUrl + "\\Students");
         File[] files = dir.listFiles();
 
@@ -265,7 +274,7 @@ public class Main {
 
 //----------------------------------------------------------------------------------------------------------------------
 
-    private static void updateCourse(Course course) {
+    static void updateCourse(Course course) {
         try {
             ObjectOutputStream objectOutputStream = new ObjectOutputStream(new FileOutputStream(dataBaseUrl
                     + "\\Courses\\" + course.getName() + ".txt"));
@@ -279,7 +288,7 @@ public class Main {
         }
     } //--- Completed ---//
 
-    private static Course getCourseFromDataBase(String name) {
+    static Course getCourseFromDataBase(String name) {
         try {
             File dir = new File(dataBaseUrl + "\\Courses");
             File[] files = dir.listFiles();
@@ -320,7 +329,7 @@ public class Main {
         deleteDirectory(new File(dataBaseUrl + "\\Courses\\" + name));
     } //--- Completed ---//
 
-    private static boolean findCourseName(String name) {
+    static boolean findCourseName(String name) {
         File dir = new File(dataBaseUrl + "\\Courses");
         File[] files = dir.listFiles();
 
@@ -394,7 +403,7 @@ public class Main {
         return 1;
     } //--- Completed ---//
 
-    private static void updateTeacher(Teacher teacher) {
+    static void updateTeacher(Teacher teacher) {
         try {
             ObjectOutputStream objectOutputStream = new ObjectOutputStream(new FileOutputStream(dataBaseUrl
                     + "\\Teachers\\" + teacher.getUsername() + ".txt"));
@@ -408,7 +417,7 @@ public class Main {
         }
     } //--- Completed ---//
 
-    private static Teacher getTeacherFromDataBase(String username) {
+    static Teacher getTeacherFromDataBase(String username) {
         try {
             File dir = new File(dataBaseUrl + "\\Teachers");
             File[] files = dir.listFiles();
@@ -895,6 +904,12 @@ public class Main {
                                     case 2:
                                         updateStudent(student);
                                         updateCourse(course);
+                                        for (Assignment assignment : course.getExercises()) {
+                                            updateExercise(assignment);
+                                        }
+                                        if (course.getProject() != null) {
+                                            updateProject(course.getProject());
+                                        }
                                         System.out.print("\033[H\033[2J");
                                         System.out.flush();
                                         System.out.println(GREEN + "Successfully added\n" + RESET);
@@ -941,6 +956,12 @@ public class Main {
                                     case 2:
                                         updateCourse(course);
                                         updateStudent(student);
+                                        for (Assignment assignment : course.getExercises()) {
+                                            updateExercise(assignment);
+                                        }
+                                        if (course.getProject() != null) {
+                                            updateProject(course.getProject());
+                                        }
                                         System.out.print("\033[H\033[2J");
                                         System.out.flush();
                                         System.out.println(GREEN + "Successfully removed\n" + RESET);
@@ -1190,6 +1211,12 @@ public class Main {
                                     case 2:
                                         updateCourse(course);
                                         updateStudent(student);
+                                        for (Assignment assignment : course.getExercises()) {
+                                            updateExercise(assignment);
+                                        }
+                                        if (course.getProject() != null) {
+                                            updateProject(course.getProject());
+                                        }
                                         System.out.print("\033[H\033[2J");
                                         System.out.flush();
                                         System.out.println(GREEN + "Successfully added\n" + RESET);
@@ -1242,6 +1269,12 @@ public class Main {
                                     case 2:
                                         updateCourse(course);
                                         updateStudent(student);
+                                        for (Assignment assignment : course.getExercises()) {
+                                            updateExercise(assignment);
+                                        }
+                                        if (course.getProject() != null) {
+                                            updateProject(course.getProject());
+                                        }
                                         System.out.print("\033[H\033[2J");
                                         System.out.flush();
                                         System.out.println(GREEN + "Successfully removed\n" + RESET);
@@ -1296,6 +1329,7 @@ public class Main {
                                             break;
                                         case 3:
                                             updateCourse(course);
+                                            updateExercise(assignment);
                                             System.out.print("\033[H\033[2J");
                                             System.out.flush();
                                             System.out.println(GREEN + "Successfully added\n" + RESET);

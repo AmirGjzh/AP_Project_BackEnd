@@ -106,6 +106,14 @@ public class Course implements Serializable {
             }
         }
         students.put(student, 0.0);
+        ArrayList<Student> st = new ArrayList<>();
+        st.add(student);
+        for (Assignment e : exercises) {
+            e.addStudents(st);
+        }
+        if (project != null) {
+            project.addStudents(st);
+        }
         student.addCourse(this);
         return 2;
     } //--- Completed ---//
@@ -114,6 +122,14 @@ public class Course implements Serializable {
         for (Student s : students.keySet()) {
             if (s.getId().equals(student.getId())) {
                 students.remove(s);
+                ArrayList<Student> st = new ArrayList<>();
+                st.add(student);
+                for (Assignment e : exercises) {
+                    e.removeStudents(st);
+                }
+                if (project != null) {
+                    project.removeStudents(st);
+                }
                 student.removeCourse(this);
                 return 2;
             }
@@ -123,6 +139,8 @@ public class Course implements Serializable {
 
     public int addExercise(Assignment exercise) {
         exercises.add(exercise);
+        System.out.println(students.size());
+        exercise.addStudents(students.keySet().stream().toList());
         return 3;
     } //--- Completed ---//
 
@@ -173,4 +191,15 @@ public class Course implements Serializable {
         }
         return -1;
     } //--- Completed ---//
+
+    public String getTop() {
+        Double d = students.values().stream().sorted().toList().getLast();
+        for (Student s : students.keySet()) {
+            if (students.get(s).equals(d)) {
+                Student s1 = Main.getStudentFromDataBase(s.getId());
+                return s1.getName() + "&" + s1.getLastname();
+            }
+        }
+        return "";
+    }
 }
