@@ -1,4 +1,7 @@
 import java.io.*;
+import java.time.Duration;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.*;
 import java.util.regex.Pattern;
 
@@ -65,7 +68,7 @@ public class Main {
         file.delete();
     } //--- Completed ---//
 
-    private static boolean addProject(String title, Course course, int deadLine) {
+    private static boolean addProject(String title, Course course, LocalDateTime deadLine) {
         try {
             File dir = new File(dataBaseUrl + "\\Courses\\" + course.getName() + "\\Project");
             File[] files = dir.listFiles();
@@ -151,7 +154,7 @@ public class Main {
         return null;
     } //--- Completed ---//
 
-    private static boolean addExercise(String title, Course course, int deadLine) {
+    private static boolean addExercise(String title, Course course, LocalDateTime deadLine) {
         try {
             File dir = new File(dataBaseUrl + "\\Courses\\" + course.getName());
             File[] files = dir.listFiles();
@@ -168,6 +171,9 @@ public class Main {
             objectOutputStream.writeObject(new Assignment(title, course, deadLine));
 
             objectOutputStream.close();
+
+            new File(dataBaseUrl
+                    + "\\Courses\\" + course.getName() + "\\" + title + "-d.txt").createNewFile();
             return true;
         } catch (Exception e) {
             System.out.print("\033[H\033[2J");
@@ -224,6 +230,7 @@ public class Main {
     static void removeStudent(String id) {
         for (Course course : getStudentFromDataBase(id).getCourses()) {
             course.removeStudent(getStudentFromDataBase(id));
+            updateCourse(course);
         }
 
         File file = new File(dataBaseUrl + "\\Students\\" + id + ".txt");
@@ -232,7 +239,7 @@ public class Main {
         file.delete();
     } //--- Completed ---//
 
-    static void addStudent(String id, String pass, String name, String lastname) {
+    static void addStudent(String id, String pass, String name, String lastname, String date) {
         try {
             ObjectOutputStream objectOutputStream = new ObjectOutputStream(new FileOutputStream(dataBaseUrl + "\\Students\\"
                     + id + ".txt"));
@@ -243,6 +250,10 @@ public class Main {
 
             File file = new File(dataBaseUrl + "\\Tasks\\" + id + ".txt");
             file.createNewFile();
+
+            Formatter formatter = new Formatter(new FileOutputStream(dataBaseUrl + "\\BirthDates.txt", true));
+            formatter.format(id + "-" + date.split("/")[0] + "-" + date.split("/")[1] + "\n");
+            formatter.close();
         } catch (Exception e) {
             System.out.print("\033[H\033[2J");
             System.out.flush();
@@ -324,6 +335,14 @@ public class Main {
     } //--- Completed ---//
 
     private static void removeCourse(String name) {
+        for (Student s : getCourseFromDataBase(name).getStudents().keySet()) {
+            Student s1 = getStudentFromDataBase(s.getId());
+            s1.removeCourse(getCourseFromDataBase(name));
+            updateStudent(s1);
+        }
+        Teacher t = getTeacherFromDataBase(getCourseFromDataBase(name).getTeacher().getUsername());
+        t.removeCourse(getCourseFromDataBase(name));
+        updateTeacher(t);
         File file = new File(dataBaseUrl + "\\Courses\\" + name + ".txt");
         file.delete();
         deleteDirectory(new File(dataBaseUrl + "\\Courses\\" + name));
@@ -349,7 +368,7 @@ public class Main {
         return !findCourseName(name);
     } //--- Completed ---//
 
-    private static void addCourse(String name, int units, int examDate) {
+    private static void addCourse(String name, int units, LocalDateTime examDate) {
         try {
             File dir = new File(dataBaseUrl + "\\Courses\\" + name);
             dir.mkdirs();
@@ -441,6 +460,11 @@ public class Main {
     } //--- Completed ---//
 
     private static void removeTeacher(String username) {
+        for (Course c : getTeacherFromDataBase(username).getCourses()) {
+            Course c1 = getCourseFromDataBase(c.getName());
+            c1.setTeacher(null);
+            updateCourse(c1);
+        }
         File file = new File(dataBaseUrl + "\\Teachers\\" + username + ".txt");
         file.delete();
     } //--- Completed ---//
@@ -649,7 +673,7 @@ public class Main {
                                     examDate = input.nextInt();
                                 } //--- Get info
 
-                                addCourse(name, units, examDate);
+                                addCourse(name, units, LocalDateTime.now().plusDays(examDate));
 
                                 {
                                     System.out.print("\033[H\033[2J");
@@ -699,6 +723,7 @@ public class Main {
                                 String pass2;
                                 String name;
                                 String lastname;
+                                String birthDate;
 
                                 {
                                     System.out.println(BLUE + "Enter student id" + RESET);
@@ -729,9 +754,11 @@ public class Main {
                                     name = input.next();
                                     System.out.println(BLUE + "Enter student lastname" + RESET);
                                     lastname = input.next();
+                                    System.out.println(BLUE + "Enter student birthdate(D/M)" + RESET);
+                                    birthDate = input.next();
                                 } //--- Get info
 
-                                addStudent(id, pass1, name, lastname);
+                                addStudent(id, pass1, name, lastname, birthDate);
 
                                 {
                                     System.out.print("\033[H\033[2J");
@@ -1297,7 +1324,7 @@ public class Main {
 
                                 String name;
                                 String title;
-                                int deadLine;
+                                LocalDateTime deadLine;
 
                                 {
                                     System.out.println(BLUE + "Enter course name" + RESET);
@@ -1310,7 +1337,7 @@ public class Main {
                                     System.out.println(BLUE + "Enter exercise title" + RESET);
                                     title = input.next();
                                     System.out.println(BLUE + "Enter exercise deadline" + RESET);
-                                    deadLine = input.nextInt();
+                                    deadLine = LocalDateTime.now().plusDays(input.nextInt());
                                 } //--- Get info
 
                                 Course course = getCourseFromDataBase(name);
@@ -1399,7 +1426,7 @@ public class Main {
 
                                 String name;
                                 String title;
-                                int deadLine;
+                                LocalDateTime deadLine;
 
                                 {
                                     System.out.println(BLUE + "Enter course name" + RESET);
@@ -1412,7 +1439,7 @@ public class Main {
                                     System.out.println(BLUE + "Enter project title" + RESET);
                                     title = input.next();
                                     System.out.println(BLUE + "Enter project deadline" + RESET);
-                                    deadLine = input.nextInt();
+                                    deadLine = LocalDateTime.now().plusDays(input.nextInt());
                                 } //--- Get info
 
                                 Course course = getCourseFromDataBase(name);
@@ -1501,7 +1528,7 @@ public class Main {
                                 String name;
                                 String title = "";
                                 int isProject;
-                                int newDeadLine;
+                                LocalDateTime newDeadLine;
 
                                 {
                                     System.out.println(BLUE + "Enter course name" + RESET);
@@ -1516,7 +1543,7 @@ public class Main {
                                     isProject = input.nextInt();
 
                                     System.out.println(BLUE + "Enter new deadline" + RESET);
-                                    newDeadLine = input.nextInt();
+                                    newDeadLine = LocalDateTime.now().plusDays(input.nextInt());
 
                                     switch (isProject) {
                                         case 1:

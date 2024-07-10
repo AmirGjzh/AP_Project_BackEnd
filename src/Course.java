@@ -1,5 +1,7 @@
 import java.io.Serial;
 import java.io.Serializable;
+import java.time.Duration;
+import java.time.LocalDateTime;
 import java.util.*;
 
 public class Course implements Serializable {
@@ -20,7 +22,7 @@ public class Course implements Serializable {
 
     private Assignment project;
 
-    private final int examDate;
+    private LocalDateTime examDate;
 
     static String RESET = "\u001B[0m";
     static String RED = "\u001B[31m";
@@ -28,7 +30,7 @@ public class Course implements Serializable {
 
 //----------------------------------------------------------------------------------------------------------------------
 
-    public Course(String name, int units, int examDate) {
+    public Course(String name, int units, LocalDateTime examDate) {
         this.name = name;
         this.units = units;
         this.examDate = examDate;
@@ -66,8 +68,8 @@ public class Course implements Serializable {
         return project;
     }
 
-    public int getExamDate() {
-        return examDate;
+    public long getExamDate() {
+        return Duration.between(LocalDateTime.now(), examDate).toDays();
     }
 
     public void setActive(boolean isActive) {

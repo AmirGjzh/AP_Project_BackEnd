@@ -1,5 +1,6 @@
 import java.io.Serial;
 import java.io.Serializable;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 
 public class Teacher implements Serializable {
@@ -150,7 +151,7 @@ public class Teacher implements Serializable {
         return 1;
     } //--- Completed ---//
 
-    public int changeDeadLine(Assignment assignment, int newDeadLine) {
+    public int changeDeadLine(Assignment assignment, LocalDateTime newDeadLine) {
         for (Course course : courses) {
             if (course.getName().equals(assignment.getCourse().getName())) {
                 return assignment.setDeadLine(newDeadLine);

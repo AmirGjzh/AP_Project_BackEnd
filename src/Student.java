@@ -118,7 +118,7 @@ public class Student implements Serializable {
         for (Course course : courses) {
             total += getCourseFromDataBase(course.getName()).getScore(getStudentFromDataBase(id)) * course.getUnits();
         }
-        System.out.printf(GREEN + "Total average is %.2f\n\n" + RESET, total / units);
+        System.out.printf(GREEN + "Total average is %4.2f\n\n" + RESET, total / units);
         return String.format("%4.2f", total / units);
     } //--- Completed ---//
 

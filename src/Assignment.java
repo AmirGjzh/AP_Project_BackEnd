@@ -1,5 +1,7 @@
 import java.io.Serial;
 import java.io.Serializable;
+import java.time.Duration;
+import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -12,13 +14,15 @@ public class Assignment implements Serializable {
 
     private final Course course;
 
-    private int deadLine;
+    private LocalDateTime deadLine;
+
+    private LocalDateTime lastDeadline;
 
     private final Map<Student, Boolean> isDone = new HashMap<>();
 
 //----------------------------------------------------------------------------------------------------------------------
 
-    public Assignment(String title, Course course, int deadLine) {
+    public Assignment(String title, Course course, LocalDateTime deadLine) {
         this.title = title;
         this.course = course;
         this.deadLine = deadLine;
@@ -36,11 +40,16 @@ public class Assignment implements Serializable {
         return course;
     }
 
-    public int getDeadLine() {
-        return deadLine;
+    public long getDeadLine() {
+        return Duration.between(LocalDateTime.now(), deadLine).toMinutes();
     }
 
-    public int setDeadLine(int deadLine) {
+    public long getLastDeadLine() {
+        return Duration.between(LocalDateTime.now(), lastDeadline).toMinutes();
+    }
+
+    public int setDeadLine(LocalDateTime deadLine) {
+        lastDeadline = this.deadLine;
         this.deadLine = deadLine;
         return 2;
     }
@@ -63,12 +72,9 @@ public class Assignment implements Serializable {
     }
 
     public void exeDone(String id) {
-        System.out.println(isDone.size());
         for (Student s: isDone.keySet()) {
-            System.out.println(s.getId());
             if (s.getId().equals(id)) {
                 isDone.put(s, true);
-                System.out.println("lll");
                 break;
             }
         }
@@ -81,5 +87,9 @@ public class Assignment implements Serializable {
             }
         }
         return false;
+    }
+
+    public boolean hasChanged() {
+        return lastDeadline != null;
     }
 }
